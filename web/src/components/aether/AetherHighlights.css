@@ -7,23 +7,9 @@
   position: relative;
 }
 
-/* Section heading */
-.ahl-heading {
-  text-align: left;
-  padding: 0 24px 48px;
-  max-width: 1148px;
-  margin: 0 auto;
-}
+/* Section heading wrapper now global */
 
-.ahl-heading h2 {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  font-size: clamp(32px, 5vw, 52px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  color: #1d1d1f;
-  margin: 0;
-}
+/* Heading H2 styles also in global .heading-wrapper h2 */
 
 /* ── Track wrapper ── */
 .ahl-track-wrap {

@@ -5,6 +5,7 @@ import Image from "next/image";
 import "./aether.css";
 import AetherHeroNoShadow from "@/components/aether/AetherHeroNoShadow";
 import AetherHighlights from "@/components/aether/AetherHighlights";
+import AetherCloserLook from "@/components/aether/AetherCloserLook";
 
 /* ─── DATA ─────────────────────────────────────────── */
 const NAV_ITEMS = ["Overview", "Design", "Performance", "Technology", "Safety", "Order"];
@@ -187,6 +188,9 @@ export default function AetherPage() {
 
       {/* ── HIGHLIGHTS SLIDER ── */}
       <AetherHighlights />
+
+      {/* ── TAKE A CLOSER LOOK ── */}
+      <AetherCloserLook />
 
       {/* ── DESIGN SHOWCASE ── */}
       <section className="aether-design" id="design">

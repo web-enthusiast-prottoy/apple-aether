@@ -1,0 +1,253 @@
+/**
+ * Apple Aether — "Take a Closer Look" Section
+ * AetherCloserLook.css
+ */
+
+.acl-section {
+  width: 100%;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  margin-bottom: 24px;
+}
+
+/* Section header wrapper now global */
+/* Heading typography also global in .heading-wrapper h2 */
+
+.acl-canvas-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9.5;
+  background: #f5f5f7;
+}
+
+.acl-images {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.acl-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  will-change: opacity, transform;
+}
+
+/* Base layer logic for transparent images natively handled rightward */
+.acl-image.img-transparent {
+  position: absolute;
+  top: 50%;
+  left: auto;
+  bottom: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: right center;
+  transform: translateY(-50%);
+}
+
+.acl-image.img-default {
+  right: 5%;
+  width: 58%;
+  max-height: 85%;
+}
+
+/* Force exterior hero image to scale massively */
+.acl-image.img-exterior {
+  right: -5%;
+  width: 116%;
+  max-height: 125%;
+}
+
+/* Selector positioned absolutely inside the canvas-wrapper */
+.acl-selector-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 90%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding-left: 48px;
+}
+
+.acl-floating-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* New GSAP-driven Wrapper Setup */
+.acl-pill-wrapper {
+  position: relative;
+  width: max-content; /* Width based on text */
+  height: 56px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(180px) saturate(200%);
+  -webkit-backdrop-filter: blur(180px) saturate(200%);
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  /* Removed CSS width transition. Pure GSAP handles widths natively to prevent snapping logic leaps! */
+  transition: background 0.4s ease;
+  will-change: width, height;
+}
+
+.acl-pill-wrapper:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.acl-pill-wrapper.is-active {
+  width: 320px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.acl-pill-absolute-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.acl-pill-header {
+  position: relative; /* Restored to relative to drive wrapper width */
+  top: 0;
+  left: 0;
+  width: max-content; /* allows icon + text to never wrap weirdly */
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  will-change: opacity, transform;
+  pointer-events: auto;
+}
+
+.acl-pill-wrapper.is-active .acl-pill-header {
+  pointer-events: none;
+}
+
+
+.acl-pill__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #1d1d1f;
+  flex-shrink: 0;
+}
+
+.acl-pill__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.acl-pill__label {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1d1d1f;
+  white-space: nowrap;
+}
+
+/* Explicit text description container */
+.acl-pill-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px; /* Constrains the test width to the expanded pill width */
+  padding: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1d1d1f;
+  cursor: pointer;
+  opacity: 0; /* Managed by GSAP */
+  will-change: opacity, transform;
+  pointer-events: none; /* Prevents invisible body from stealing clicks */
+}
+
+.acl-pill-wrapper.is-active .acl-pill-body {
+  pointer-events: auto; /* Re-enables clicks when active */
+}
+
+.acl-pill-body strong {
+  color: #1d1d1f;
+  font-weight: 600;
+  margin-right: 4px;
+  display: block; /* optional styling for stronger hierarchy */
+  margin-bottom: 2px;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .acl-canvas-wrapper {
+    aspect-ratio: 4 / 3;
+  }
+  .acl-image.img-default {
+    right: 50%;
+    transform: translateX(50%) translateY(10%);
+    width: 80%;
+    top: auto;
+    bottom: 5%;
+  }
+  .acl-image.img-exterior {
+    right: 50%;
+    transform: translateX(50%) translateY(5%);
+    width: 130%;
+    top: auto;
+    bottom: -5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .acl-canvas-wrapper {
+    aspect-ratio: auto;
+    min-height: 600px;
+  }
+  
+  .acl-selector-wrap {
+    padding-left: 24px;
+    align-items: flex-start;
+    padding-top: 32px;
+  }
+  
+  .acl-pill-wrapper.is-active {
+    width: 280px;
+  }
+
+  .acl-pill-body {
+    width: 280px;
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  .acl-pill__label {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .acl-selector-wrap {
+    padding-left: 16px;
+    padding-top: 24px;
+  }
+
+  .acl-pill-wrapper.is-active {
+    width: 260px;
+  }
+  .acl-pill-body {
+    width: 260px;
+  }
+}

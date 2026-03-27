@@ -243,7 +243,7 @@ export default function AetherHighlights() {
 
   return (
     <section ref={sectionRef} className="ahl-section" aria-label="Apple Aether Highlights">
-      <div className="ahl-heading">
+      <div className="heading-wrapper">
         <h2>Get the highlights.</h2>
       </div>
 
