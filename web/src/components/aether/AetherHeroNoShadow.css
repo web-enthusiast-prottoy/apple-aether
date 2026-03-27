@@ -1,0 +1,62 @@
+/* ─── AETHER HERO V2 NO SHADOW — GSAP Frame-Sequence ─── */
+
+.hero-v2-ns {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #f0f0f3; /* Light silver color */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-v2-ns__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 2;
+}
+
+.hero-v2-ns__words {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 1;
+  padding: 12vh 4vw;
+  overflow: hidden;
+}
+
+.hero-v2-ns__word {
+  font-size: clamp(80px, 14vw, 210px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #1d1d1f;
+  font-family: "Inter", -apple-system, "SF Pro Display", sans-serif;
+  display: block;
+  will-change: transform;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.hero-v2-ns__word--left {
+  align-self: flex-start;
+  margin-top: 18vh;
+  margin-left: 12vw;
+}
+
+.hero-v2-ns__word--right {
+  align-self: flex-end;
+  margin-bottom: 5vh;
+}
+
+@media (max-width: 768px) {
+  .hero-v2-ns__word {
+    font-size: clamp(44px, 11vw, 80px);
+  }
+}

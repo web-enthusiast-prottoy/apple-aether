@@ -1,0 +1,64 @@
+/* ─── AETHER HERO V2 ALTERNATIVE — GSAP Frame-Sequence ─── */
+
+.hero-v2-alt {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-v2-alt__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1; /* Images behind text */
+}
+
+.hero-v2-alt__words {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 2; /* Text on top */
+  padding: 12vh 4vw;
+  overflow: hidden;
+}
+
+.hero-v2-alt__word {
+  font-size: clamp(80px, 14vw, 210px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  font-family: "Inter", -apple-system, "SF Pro Display", sans-serif;
+  display: block;
+  will-change: transform;
+  user-select: none;
+  white-space: nowrap;
+  /* Add subtle shadow for contrast against bright scenes */
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hero-v2-alt__word--left {
+  align-self: flex-start;
+  margin-top: 18vh;
+  margin-left: 12vw;
+}
+
+.hero-v2-alt__word--right {
+  align-self: flex-end;
+  margin-bottom: 5vh;
+}
+
+@media (max-width: 768px) {
+  .hero-v2-alt__word {
+    font-size: clamp(44px, 11vw, 80px);
+  }
+}
