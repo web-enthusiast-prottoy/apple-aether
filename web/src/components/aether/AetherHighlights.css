@@ -1,0 +1,213 @@
+/* ─── AETHER HIGHLIGHTS SLIDER ──────────────────────── */
+
+.ahl-section {
+  background: #f5f5f7;
+  padding: 100px 0 60px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Section heading */
+.ahl-heading {
+  text-align: left;
+  padding: 0 24px 48px;
+  max-width: 1148px;
+  margin: 0 auto;
+}
+
+.ahl-heading h2 {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #1d1d1f;
+  margin: 0;
+}
+
+/* ── Track wrapper ── */
+.ahl-track-wrap {
+  position: relative;
+  max-width: 1148px;
+  margin: 0 auto;
+  padding: 0 24px;
+  perspective: 1000px;
+}
+
+/* ── Slides strip ── */
+.ahl-track {
+  display: flex;
+  gap: 0;
+  will-change: transform;
+}
+
+/* ── Individual slide card ── */
+.ahl-card {
+  flex: 0 0 100%;
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #e0e0e5;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Image fill */
+.ahl-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* Bottom gradient overlay */
+.ahl-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.22) 45%,
+    transparent 75%
+  );
+  z-index: 1;
+}
+
+/* Text content inside card */
+.ahl-card__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 0 44px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  will-change: opacity, transform;
+}
+
+.ahl-card__headline {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0;
+  max-width: 560px;
+}
+
+.ahl-card__body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: clamp(14px, 1.5vw, 17px);
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+  max-width: 480px;
+}
+
+/* ── Controls bar ── */
+.ahl-controls {
+  max-width: 1148px;
+  margin: 32px auto 0;
+  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  will-change: transform;
+}
+
+/* Dot strip */
+.ahl-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ahl-dot {
+  position: relative;
+  overflow: hidden;
+  width: 8px; /* Default inactive width */
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+  background: rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  flex-shrink: 0;
+}
+
+.ahl-dot--active {
+  width: 48px;
+}
+
+.ahl-dot-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: #1d1d1f;
+  border-radius: 4px;
+}
+
+/* Play/Pause button */
+.ahl-play-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+  color: #1d1d1f;
+}
+
+.ahl-play-btn:hover {
+  border-color: #1d1d1f;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.ahl-play-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ahl-section {
+    padding: 72px 0 48px;
+  }
+
+  .ahl-card__content {
+    padding: 0 24px 28px;
+    gap: 8px;
+  }
+
+  .ahl-controls {
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ahl-card__image {
+    transition: none;
+  }
+}

@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import "./aether.css";
-import AetherHero from "@/components/aether/AetherHero";
-import AetherHeroAlternative from "@/components/aether/AetherHeroAlternative";
 import AetherHeroNoShadow from "@/components/aether/AetherHeroNoShadow";
+import AetherHighlights from "@/components/aether/AetherHighlights";
 
 /* ─── DATA ─────────────────────────────────────────── */
 const NAV_ITEMS = ["Overview", "Design", "Performance", "Technology", "Safety", "Order"];
@@ -184,9 +183,10 @@ export default function AetherPage() {
       </nav>
 
       {/* ── HERO — GSAP Frame Sequence ── */}
-      <AetherHero />
-      <AetherHeroAlternative />
       <AetherHeroNoShadow />
+
+      {/* ── HIGHLIGHTS SLIDER ── */}
+      <AetherHighlights />
 
       {/* ── DESIGN SHOWCASE ── */}
       <section className="aether-design" id="design">
