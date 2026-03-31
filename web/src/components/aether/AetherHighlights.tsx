@@ -70,12 +70,15 @@ export default function AetherHighlights() {
   useEffect(() => {
     // 1. Initialize GSAP on mount
     let ctx: any; // gsap context
+    let observer: IntersectionObserver;
     
     const initGSAP = async () => {
       const { gsap } = await import("gsap");
       gsapRef.current = gsap;
       
       ctx = gsap.context(() => {
+        const entryTl = gsap.timeline({ paused: true });
+
         // Initial setup for cards is handled by CSS mostly, but we define defaults
         cardsRef.current.forEach((card, i) => {
           if (!card) return;
@@ -89,6 +92,51 @@ export default function AetherHighlights() {
             if (img) gsap.set(img, { scale: 1, xPercent: 0 });
           }
         });
+
+        // Setup entrance animations
+        if (trackRef.current) {
+          gsap.set(trackRef.current, { opacity: 0, y: 60, scale: 0.97 });
+          entryTl.to(trackRef.current, 
+            { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }, 
+            0
+          );
+        }
+
+        const dots = sectionRef.current?.querySelectorAll('.ahl-dot');
+        const playBtn = sectionRef.current?.querySelector('.ahl-play-btn');
+        
+        const controlElements: Element[] = [];
+        if (dots) dots.forEach(dot => controlElements.push(dot));
+        if (playBtn) controlElements.push(playBtn);
+        
+        if (controlElements.length > 0) {
+          gsap.set(controlElements, { opacity: 0, y: 25 });
+          entryTl.to(controlElements, 
+            { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "back.out(1.2)" }, 
+            0.7 // Sequence much later after the main card animation starts
+          );
+        }
+
+        // Intersection Observer to start autoplay and entrance only when visible
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              entryTl.play();
+              setInView(true);
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.5 } // Trigger when 50% of the track wrap is visible (ensure user sees the motion)
+        );
+
+        if (trackRef.current) {
+          const wrap = trackRef.current.closest('.ahl-track-wrap');
+          if (wrap) {
+             observer.observe(wrap);
+          } else {
+             observer.observe(trackRef.current);
+          }
+        }
       }, sectionRef);
       
       setGsapReady(true);
@@ -96,22 +144,8 @@ export default function AetherHighlights() {
 
     initGSAP();
 
-    // Intersection Observer to start autoplay only when visible
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-        }
-      },
-      { threshold: 0.15 } // Trigger when 15% visible
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
     return () => {
-      observer.disconnect();
+      if (observer) observer.disconnect();
       if (ctx) ctx.revert();
     };
   }, []);
@@ -243,12 +277,14 @@ export default function AetherHighlights() {
 
   return (
     <section ref={sectionRef} className="ahl-section" aria-label="Apple Aether Highlights">
-      <div className="heading-wrapper">
-        <h2>Get the highlights.</h2>
-      </div>
+      <div className="padding-global">
+        <div className="container-large">
+          <div className="heading-wrapper">
+            <h2>Get the highlights.</h2>
+          </div>
 
-      <div className="ahl-track-wrap">
-        <div ref={trackRef} className="ahl-track">
+          <div className="ahl-track-wrap">
+            <div ref={trackRef} className="ahl-track">
           {SLIDES.map((slide, i) => (
             <div
               key={slide.id}
@@ -312,6 +348,8 @@ export default function AetherHighlights() {
             </svg>
           )}
         </button>
+      </div>
+        </div>
       </div>
     </section>
   );

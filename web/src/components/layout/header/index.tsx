@@ -38,7 +38,9 @@ const DiscordIcon = () => {
 
 export default function Header() {
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 supports-[backdrop-filter]:dark:bg-zinc-950/80">
+        <header 
+          className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 luxury-navbar"
+        >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div className="flex h-14 items-center justify-between gap-2 sm:gap-4">
                     {/* Left Section */}

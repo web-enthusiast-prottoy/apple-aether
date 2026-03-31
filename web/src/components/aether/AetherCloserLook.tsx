@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./AetherCloserLook.css";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export interface AetherTab {
   id: string;
@@ -85,6 +91,7 @@ export default function AetherCloserLook() {
   const [isAnimating, setIsAnimating] = useState(false);
   
   const sectionRef = useRef<HTMLElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
   const gsapRef = useRef<any>(null);
 
   const imageRefs = useRef<Record<string, HTMLImageElement | null>>({});
@@ -96,12 +103,10 @@ export default function AetherCloserLook() {
   const bodyRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    const init = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
-      gsapRef.current = gsap;
-      
+    gsapRef.current = gsap;
+    let observer: IntersectionObserver;
+
+    let ctx = gsap.context(() => {
       // Init Images
       TABS.forEach(tab => {
         if (imageRefs.current[tab.id]) {
@@ -114,20 +119,39 @@ export default function AetherCloserLook() {
         }
       });
       
+      const entryTl = gsap.timeline({ paused: true });
+
       if (defaultImageRef.current) {
-        gsap.set(defaultImageRef.current, { opacity: 0, yPercent: -50, x: 250 });
-        
-        // Scroll entry from right
-        gsap.to(defaultImageRef.current, {
-          x: 0,
-          opacity: 1,
-          duration: 1.4,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 65%",
+        gsap.set(defaultImageRef.current, { opacity: 0, yPercent: -50, x: 100, scale: 1.05 });
+        entryTl.to(defaultImageRef.current, 
+          { x: 0, scale: 1, opacity: 1, duration: 1.5, ease: "power3.out" }, 
+          0
+        );
+      }
+
+      // Cool cascade entry for tab buttons
+      const tabWrappers = TABS.map(t => wrapperRefs.current[t.id]).filter(Boolean);
+      if (tabWrappers.length) {
+        gsap.set(tabWrappers, { opacity: 0, y: 40 });
+        entryTl.to(tabWrappers, 
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out" }, 
+          0.2 // Start slightly after the image
+        );
+      }
+      
+      // Fallback intersection observer, much more robust against lenis/smooth-scrollbar overrides
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            entryTl.play();
+            observer.disconnect();
           }
-        });
+        },
+        { threshold: 0.35 } // Trigger when 35% of the canvas wrapper is visible
+      );
+
+      if (canvasRef.current) {
+        observer.observe(canvasRef.current);
       }
       
       // Init Tabs: default height 56px, active content hidden
@@ -137,9 +161,12 @@ export default function AetherCloserLook() {
            gsap.set(body, { opacity: 0, scale: 0.95 });
         }
       });
+    }, sectionRef);
 
+    return () => {
+      ctx.revert(); // Will now correctly and synchronously revert the single strict-mode pass
+      if (observer) observer.disconnect();
     };
-    init();
   }, []);
 
   const handleTabChange = (newId: string) => {
@@ -258,7 +285,7 @@ export default function AetherCloserLook() {
               <h2>Take a closer look at Aether.</h2>
             </div>
 
-            <div className="acl-canvas-wrapper">
+            <div ref={canvasRef} className="acl-canvas-wrapper">
               
               <div className="acl-images">
                 <img 

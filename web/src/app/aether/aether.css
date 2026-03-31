@@ -79,10 +79,10 @@
 }
 
 .aether-nav--scrolled {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  backdrop-filter: blur(15px) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .aether-nav-inner {
@@ -834,6 +834,27 @@
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes appleShimmer {
+  0% { opacity: 0.1; }
+  50% { opacity: 0.25; }
+  100% { opacity: 0.1; }
+}
+
+@keyframes appleWarnFade {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 

@@ -120,3 +120,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+.luxury-navbar {
+  background: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  backdrop-filter: blur(15px) !important;
+}
+
+.dark .luxury-navbar {
+  background: rgba(10, 10, 10, 0.72) !important;
+}

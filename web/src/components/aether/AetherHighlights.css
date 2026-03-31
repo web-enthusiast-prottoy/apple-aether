@@ -14,9 +14,8 @@
 /* ── Track wrapper ── */
 .ahl-track-wrap {
   position: relative;
-  max-width: 1148px;
-  margin: 0 auto;
-  padding: 0 24px;
+  width: 100%;
+  padding: 0;
   perspective: 1000px;
 }
 
@@ -104,9 +103,9 @@
 
 /* ── Controls bar ── */
 .ahl-controls {
-  max-width: 1148px;
-  margin: 32px auto 0;
-  padding: 0 24px;
+  width: 100%;
+  margin: 32px 0 0;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,84 +6,18 @@ import "./aether.css";
 import AetherHeroNoShadow from "@/components/aether/AetherHeroNoShadow";
 import AetherHighlights from "@/components/aether/AetherHighlights";
 import AetherCloserLook from "@/components/aether/AetherCloserLook";
+import Aether3DConfigurator from "@/components/aether/Aether3DConfigurator";
+import AetherLoader from "@/components/aether/AetherLoader";
+import AetherIphoneDrive from "@/components/aether/AetherIphoneDrive";
 
 /* ─── DATA ─────────────────────────────────────────── */
-const NAV_ITEMS = ["Overview", "Design", "Performance", "Technology", "Safety", "Order"];
+const NAV_ITEMS = ["Overview", "Design", "Performance"];
 
 const STATS = [
   { value: 2.1, unit: "s", label: "0–100 km/h" },
   { value: 720, unit: "km", label: "Estimated Range" },
   { value: 900, unit: "hp", label: "Peak Power" },
   { value: 15, unit: "min", label: "0–80% Charge" },
-];
-
-const TECH_PANELS = [
-  {
-    tag: "Siri Intelligence",
-    title: "Drive with your voice.",
-    body:
-      "Siri understands your journey before you do. Set destinations, control climate, play music, and navigate autonomously — all with natural language.",
-    icon: "🎙",
-  },
-  {
-    tag: "iPhone Sync",
-    title: "Your phone. Your car.",
-    body:
-      "Step in and Aether syncs instantly. Your playlists, navigation, calendar, and calls — live in the dashboard the moment you sit down.",
-    icon: "📱",
-  },
-  {
-    tag: "Autonomous Mode",
-    title: "Hands off. Mind free.",
-    body:
-      "Level 4 autonomy across all conditions. 32 sensors, 8 cameras, lidar and neural processing — all running Apple Silicon at the edge.",
-    icon: "🧠",
-  },
-  {
-    tag: "CarPlay Ultra",
-    title: "The full OS. In the dash.",
-    body:
-      "Not just a mirror. CarPlay Ultra runs natively — apps, widgets, spatial audio, and Live Activities, spanning the entire dash display.",
-    icon: "🖥",
-  },
-];
-
-const PRICING = [
-  {
-    name: "Aether",
-    price: "$79,900",
-    range: "620 km",
-    power: "500 hp",
-    acceleration: "3.2s",
-    color: "#F5F5F7",
-    textColor: "#1D1D1F",
-  },
-  {
-    name: "Aether Pro",
-    price: "$109,900",
-    range: "720 km",
-    power: "700 hp",
-    acceleration: "2.5s",
-    color: "#1D1D1F",
-    textColor: "#F5F5F7",
-    featured: true,
-  },
-  {
-    name: "Aether Max",
-    price: "$139,900",
-    range: "780 km",
-    power: "900 hp",
-    acceleration: "2.1s",
-    color: "#0071E3",
-    textColor: "#FFFFFF",
-  },
-];
-
-const SUSTAINABILITY = [
-  { icon: "♻️", title: "100% Recycled Aluminum", body: "Every body panel forged from post-industrial recycled aluminum alloy." },
-  { icon: "☀️", title: "Solar Charging Ready", body: "Roof-integrated solar cells add 30 km of range daily in direct sunlight." },
-  { icon: "🌱", title: "Carbon Negative Assembly", body: "Our factory runs entirely on renewable energy, carbon-negative since 2024." },
-  { icon: "💧", title: "Waterless Manufacturing", body: "Zero water usage in paint and finishing through dry-process technology." },
 ];
 
 /* ─── HOOKS ─────────────────────────────────────────── */
@@ -129,11 +63,60 @@ function StatItem({ value, unit, label, trigger }: { value: number; unit: string
 /* ─── PAGE ───────────────────────────────────────────── */
 export default function AetherPage() {
   const [scrolled, setScrolled] = useState(false);
-  const [techIndex, setTechIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasTriggeredPerf, setHasTriggeredPerf] = useState(false);
 
   const perfRef = useRef<HTMLElement>(null);
-  const perfInView = useInView(perfRef as React.RefObject<Element>);
+
+  // GSAP Animations
+  useEffect(() => {
+    let ctx: any;
+    const initGSAP = async () => {
+      const { gsap } = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+
+      ctx = gsap.context(() => {
+        // Performance Section Animations
+        const perfTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: perfRef.current,
+            start: "top 70%",
+            onEnter: () => setHasTriggeredPerf(true),
+          }
+        });
+
+        perfTl
+          .from(".aether-perf-eyebrow", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out"
+          })
+          .from(".aether-perf-title-line", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power4.out"
+          }, "-=0.6")
+          .from(".aether-stat", {
+            y: 60,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power3.out"
+          }, "-=0.7");
+      }, perfRef);
+    };
+
+    if (!isLoading) {
+      initGSAP();
+    }
+
+    return () => ctx && ctx.revert();
+  }, [isLoading]);
 
   // Nav scroll tracking
   useEffect(() => {
@@ -142,16 +125,13 @@ export default function AetherPage() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Tech horizontal scroll
-  const techRef = useRef<HTMLDivElement>(null);
-  const handleTechScroll = () => {
-    if (!techRef.current) return;
-    const { scrollLeft, offsetWidth } = techRef.current;
-    setTechIndex(Math.round(scrollLeft / offsetWidth));
-  };
+
 
   return (
-    <div className="aether-root">
+    <div className="aether-root" id="overview">
+      {/* ── LOADER ── */}
+      {isLoading && <AetherLoader onComplete={() => setIsLoading(false)} />}
+
       {/* ── NAV ── */}
       <nav className={`aether-nav ${scrolled ? "aether-nav--scrolled" : ""}`}>
         <div className="aether-nav-inner">
@@ -192,41 +172,8 @@ export default function AetherPage() {
       {/* ── TAKE A CLOSER LOOK ── */}
       <AetherCloserLook />
 
-      {/* ── DESIGN SHOWCASE ── */}
-      <section className="aether-design" id="design">
-        <div className="padding-global">
-          <div className="container-large">
-            <div className="padding-section-large">
-              <div className="aether-design-component">
-                <div className="aether-design-text">
-                  <p className="aether-eyebrow">Industrial Design</p>
-                  <h2 className="heading-style-h2 aether-section-title">Precision.<br />Materialized.</h2>
-                  <p className="text-size-medium aether-body">
-                    Every surface, edge, and curve exists for a reason. Machined from a single aluminum billet, the Aether body achieves a drag coefficient of 0.19 — the lowest of any production vehicle.
-                  </p>
-                  <ul className="aether-feature-list">
-                    <li>Single-piece aluminum monocoque</li>
-                    <li>Frameless panoramic glass roof</li>
-                    <li>Touch-sensitive flush door handles</li>
-                  </ul>
-                </div>
-                <div className="aether-design-image">
-                  <div className="aether-design-img-wrap">
-                    <Image
-                      src="/aether-car.png"
-                      alt="Apple Aether Design Detail"
-                      fill
-                      className="aether-design-img"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <div className="aether-design-caption">Cd 0.19 · Aerodynamic Coefficient</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── DESIGN SHOWCASE (3D Configurator) ── */}
+      <Aether3DConfigurator />
 
       {/* ── PERFORMANCE ── */}
       <section className="aether-performance" id="performance" ref={perfRef as React.RefObject<HTMLElement>}>
@@ -241,13 +188,13 @@ export default function AetherPage() {
           <div className="container-large">
             <div className="padding-section-large">
               <div className="aether-perf-component">
-                <p className="aether-eyebrow aether-eyebrow--light">Performance</p>
                 <h2 className="heading-style-h2 aether-section-title aether-section-title--light">
-                  Nothing else<br />comes close.
+                  <span className="display-block aether-perf-title-line">Nothing else,</span>
+                  <span className="display-block aether-perf-title-line">comes close.</span>
                 </h2>
                 <div className="aether-stats-grid">
                   {STATS.map((s) => (
-                    <StatItem key={s.label} {...s} trigger={perfInView} />
+                    <StatItem key={s.label} {...s} trigger={hasTriggeredPerf} />
                   ))}
                 </div>
               </div>
@@ -256,139 +203,9 @@ export default function AetherPage() {
         </div>
       </section>
 
-      {/* ── TECHNOLOGY ── */}
-      <section className="aether-technology" id="technology">
-        <div className="aether-tech-header">
-          <div className="padding-global">
-            <div className="container-large">
-              <p className="aether-eyebrow">Apple Ecosystem</p>
-              <h2 className="heading-style-h2 aether-section-title">Everything connected.<br />Nothing complicated.</h2>
-            </div>
-          </div>
-        </div>
-
-        <div className="aether-tech-scroll-wrap">
-          <div className="aether-tech-scroll" ref={techRef} onScroll={handleTechScroll}>
-            {TECH_PANELS.map((panel, i) => (
-              <div key={i} className="aether-tech-panel">
-                <div className="aether-tech-panel-inner">
-                  <span className="aether-tech-icon">{panel.icon}</span>
-                  <p className="aether-eyebrow">{panel.tag}</p>
-                  <h3 className="heading-style-h3 aether-tech-title">{panel.title}</h3>
-                  <p className="text-size-medium aether-body">{panel.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="aether-tech-dots">
-            {TECH_PANELS.map((_, i) => (
-              <button
-                key={i}
-                className={`aether-tech-dot ${i === techIndex ? "aether-tech-dot--active" : ""}`}
-                onClick={() => {
-                  if (!techRef.current) return;
-                  techRef.current.scrollTo({ left: i * techRef.current.offsetWidth, behavior: "smooth" });
-                }}
-                aria-label={`Panel ${i + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── INTERIOR ── */}
-      <section className="aether-interior" id="safety">
-        <div className="aether-interior-image-wrap">
-          <Image
-            src="/aether-interior.png"
-            alt="Apple Aether Interior"
-            fill
-            className="aether-interior-img"
-            sizes="100vw"
-          />
-          <div className="aether-interior-overlay" />
-        </div>
-        <div className="padding-global aether-interior-content-wrap">
-          <div className="container-medium">
-            <div className="padding-section-large">
-              <div className="aether-interior-component">
-                <p className="aether-eyebrow aether-eyebrow--light">Interior</p>
-                <h2 className="heading-style-h2 aether-section-title aether-section-title--light">
-                  Zero buttons.<br />Total control.
-                </h2>
-                <p className="text-size-medium aether-body aether-body--light">
-                  The Aether cabin removes everything that shouldn&apos;t be there. A single curved display spans the full dashboard. The rest is silence.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SUSTAINABILITY ── */}
-      <section className="aether-sustainability">
-        <div className="padding-global">
-          <div className="container-large">
-            <div className="padding-section-large">
-              <div className="aether-sustain-component">
-                <div className="aether-sustain-header">
-                  <p className="aether-eyebrow">Environment</p>
-                  <h2 className="heading-style-h2 aether-section-title">Built for the planet.<br />Not just for you.</h2>
-                </div>
-                <div className="aether-sustain-grid">
-                  {SUSTAINABILITY.map((item) => (
-                    <div key={item.title} className="aether-sustain-item">
-                      <span className="aether-sustain-icon">{item.icon}</span>
-                      <h3 className="heading-style-h5 aether-sustain-title">{item.title}</h3>
-                      <p className="text-size-small aether-body">{item.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PRICING ── */}
-      <section className="aether-pricing" id="order">
-        <div className="padding-global">
-          <div className="container-large">
-            <div className="padding-section-large">
-              <div className="aether-pricing-component">
-                <p className="aether-eyebrow">Choose Yours</p>
-                <h2 className="heading-style-h2 aether-section-title">Every model.<br />Uncompromised.</h2>
-                <div className="aether-pricing-grid">
-                  {PRICING.map((model) => (
-                    <div
-                      key={model.name}
-                      className={`aether-pricing-card ${model.featured ? "aether-pricing-card--featured" : ""}`}
-                      style={{ background: model.color, color: model.textColor }}
-                    >
-                      {model.featured && <div className="aether-pricing-badge">Most Popular</div>}
-                      <div className="aether-pricing-top">
-                        <h3 className="heading-style-h4">{model.name}</h3>
-                        <p className="aether-pricing-price">{model.price}</p>
-                      </div>
-                      <ul className="aether-pricing-specs">
-                        <li><span>Range</span><strong>{model.range}</strong></li>
-                        <li><span>Power</span><strong>{model.power}</strong></li>
-                        <li><span>0–100</span><strong>{model.acceleration}</strong></li>
-                      </ul>
-                      <a
-                        href="#"
-                        className="aether-pricing-cta"
-                        style={{ color: model.textColor, borderColor: model.textColor }}
-                      >
-                        Pre-order →
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* ── IPHONE DRIVE VISUALIZATION ── */}
+      <section className="aether-iphone-drive" id="drive-sync">
+        <AetherIphoneDrive />
       </section>
 
       {/* ── FOOTER ── */}
@@ -416,7 +233,6 @@ export default function AetherPage() {
                     <li><a href="#">Overview</a></li>
                     <li><a href="#">Design</a></li>
                     <li><a href="#">Performance</a></li>
-                    <li><a href="#">Technology</a></li>
                   </ul>
                 </div>
                 <div>
