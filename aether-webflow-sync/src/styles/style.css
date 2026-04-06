@@ -1,0 +1,21 @@
+@import "./client-first.css";
+@import "./global-styles.css";
+@import "./aether.css";
+
+/* ─── Base overrides ─── */
+@import "tailwindcss";
+
+:root {
+  --background: #f0f0f3;
+  --foreground: #1d1d1f;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Utility used by Performance section */
+.display-block {
+  display: block;
+}

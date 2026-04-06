@@ -113,6 +113,12 @@ export default function AetherPage() {
 
     if (!isLoading) {
       initGSAP();
+      // Global refresh after a small delay to handle layout shifts
+      setTimeout(() => {
+        import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+          ScrollTrigger.refresh();
+        });
+      }, 100);
     }
 
     return () => ctx && ctx.revert();
@@ -164,7 +170,7 @@ export default function AetherPage() {
       </nav>
 
       {/* ── HERO — GSAP Frame Sequence ── */}
-      <AetherHeroNoShadow />
+      <AetherHeroNoShadow isParentLoading={isLoading} />
 
       {/* ── HIGHLIGHTS SLIDER ── */}
       <AetherHighlights />

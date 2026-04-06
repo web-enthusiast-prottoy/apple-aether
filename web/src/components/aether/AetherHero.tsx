@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./AetherHero.css";
 
 const FRAMES = [
@@ -64,41 +64,95 @@ const FRAMES = [
   "/aether-hero/nobg-1774556635621-frame-0058.png",
 ];
 
-const TOTAL = FRAMES.length; // 58
+const TOTAL = FRAMES.length;
 
-export default function AetherHero() {
+interface AetherHeroProps {
+  isParentLoading?: boolean;
+}
+
+export default function AetherHero({ isParentLoading = false }: AetherHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLeftRef = useRef<HTMLSpanElement>(null);
   const textRightRef = useRef<HTMLSpanElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const frameIndexRef = useRef(0);
-  const rafRef = useRef<number | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const gsapCleanupRef = useRef<(() => void) | null>(null);
 
+  // 1. Image Preloading
   useEffect(() => {
-    // ── 1. Preload all frames ──────────────────────────────────────────
     const images: HTMLImageElement[] = new Array(TOTAL);
-    let loaded = 0;
+    let loadedCount = 0;
 
-    const drawFrame = (index: number) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      const img = images[index];
-      if (!img?.complete) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Cover-fit the image on canvas
-      const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-      const w = img.naturalWidth * scale;
-      const h = img.naturalHeight * scale;
-      const x = (canvas.width - w) / 2;
-      const y = (canvas.height - h) / 2;
-      ctx.drawImage(img, x, y, w, h);
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount === TOTAL) {
+        imagesRef.current = images;
+        setImagesLoaded(true);
+      }
     };
 
+    FRAMES.forEach((src, i) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        images[i] = img;
+        checkAllLoaded();
+      };
+      img.onerror = () => {
+        console.error(`Failed to load frame ${i}: ${src}`);
+        checkAllLoaded();
+      };
+    });
+  }, []);
+
+  // 2. Canvas Drawing Logic
+  const drawFrame = (index: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const img = imagesRef.current[index];
+    if (!img) return;
+
+    // Ensure canvas matches its display size
+    const rect = canvas.getBoundingClientRect();
+    if (canvas.width !== rect.width || canvas.height !== rect.height) {
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+    const w = img.naturalWidth * scale;
+    const h = img.naturalHeight * scale;
+    const x = (canvas.width - w) / 2;
+    const y = (canvas.height - h) / 2;
+    ctx.drawImage(img, x, y, w, h);
+  };
+
+  // 3. Initial Frame and Resize
+  useEffect(() => {
+    if (!imagesLoaded) return;
+
+    const handleResize = () => {
+      drawFrame(frameIndexRef.current);
+    };
+
+    handleResize(); // Draw initial frame
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [imagesLoaded]);
+
+  // 4. GSAP Initialization
+  useEffect(() => {
+    // Only init GSAP if images are loaded AND parent loader is done
+    if (!imagesLoaded || isParentLoading) return;
+
+    let ctx: any;
+
     const initGSAP = async () => {
-      // Dynamic import so it's client-only
       const { gsap } = await import("gsap");
       const { ScrollTrigger } = await import("gsap/ScrollTrigger");
       gsap.registerPlugin(ScrollTrigger);
@@ -108,103 +162,66 @@ export default function AetherHero() {
       const textRight = textRightRef.current;
       if (!section || !textLeft || !textRight) return;
 
-      // ── 2. Resize canvas to match section ────────────────────────────
-      const resizeCanvas = () => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        canvas.width = section.offsetWidth;
-        canvas.height = section.offsetHeight;
-        drawFrame(frameIndexRef.current);
-      };
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
+      ctx = gsap.context(() => {
+        const proxy = { frame: 0 };
 
-      // ── 3. ScrollTrigger: pin + scrub across 300vh ───────────────────
-      const proxy = { frame: 0 };
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=300%",
+            pin: true,
+            scrub: 2,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "+=250%",
-          pin: true,
-          scrub: 0.5,
-          anticipatePin: 1,
-        },
+        tl.to(proxy, {
+          frame: TOTAL - 1,
+          ease: "none",
+          onUpdate() {
+            const idx = Math.round(proxy.frame);
+            if (idx !== frameIndexRef.current) {
+              frameIndexRef.current = idx;
+              drawFrame(idx);
+            }
+          },
+        });
+
+        // Split text animation without fade
+        tl.to(textLeft, { x: "-40vw", ease: "power2.inOut" }, 0);
+        tl.to(textRight, { x: "40vw", ease: "power2.inOut" }, 0);
+        
+        ScrollTrigger.refresh();
       });
 
-      // Frame sequence tween
-      tl.to(proxy, {
-        frame: TOTAL - 1,
-        snap: "frame",
-        ease: "none",
-        onUpdate() {
-          const idx = Math.round(proxy.frame);
-          if (idx !== frameIndexRef.current) {
-            frameIndexRef.current = idx;
-            drawFrame(idx);
-          }
-        },
-      });
-
-      // Text separation — runs in parallel with frame playback
-      tl.to(
-        textLeft,
-        { x: "-45vw", ease: "none" },
-        0 // start at the same time as frames
-      );
-      tl.to(
-        textRight,
-        { x: "45vw", ease: "none" },
-        0
-      );
-
-      return () => {
-        window.removeEventListener("resize", resizeCanvas);
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      };
+      gsapCleanupRef.current = () => ctx && ctx.revert();
     };
 
-    // Load all images, draw frame 0 as soon as it's ready, init GSAP when all done
-    FRAMES.forEach((src, i) => {
-      const img = new window.Image();
-      img.src = src;
-      img.onload = () => {
-        images[i] = img;
-        if (i === 0) drawFrame(0); // show frame 1 immediately
-        loaded++;
-        if (loaded === TOTAL) {
-          imagesRef.current = images;
-          initGSAP();
-        }
-      };
-      img.onerror = () => {
-        // Still count it loaded so we don't block
-        loaded++;
-        if (loaded === TOTAL) {
-          imagesRef.current = images;
-          initGSAP();
-        }
-      };
-    });
+    initGSAP();
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (gsapCleanupRef.current) gsapCleanupRef.current();
     };
-  }, []);
+  }, [imagesLoaded, isParentLoading]);
 
   return (
     <section ref={sectionRef} className="hero-v2" id="overview" aria-label="Apple Aether Hero">
-      {/* Full-screen canvas for frame sequence */}
-      <canvas ref={canvasRef} className="hero-v2__canvas" aria-hidden="true" />
+      <canvas 
+        ref={canvasRef} 
+        className="hero-v2__canvas" 
+        style={{ width: "100%", height: "100%", display: "block" }}
+      />
 
-      {/* Split word marks */}
       <div className="hero-v2__words" aria-hidden="true">
-        <span ref={textLeftRef} className="hero-v2__word hero-v2__word--left">Apple</span>
-        <span ref={textRightRef} className="hero-v2__word hero-v2__word--right">Aether</span>
+        <span ref={textLeftRef} className="hero-v2__word hero-v2__word--left">
+          Apple
+        </span>
+        <span ref={textRightRef} className="hero-v2__word hero-v2__word--right">
+          Aether
+        </span>
       </div>
-
     </section>
   );
 }
