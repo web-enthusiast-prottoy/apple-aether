@@ -5,7 +5,7 @@ import "./AetherHeroNoShadow.css";
 
 const TOTAL = 49;
 const FRAMES = Array.from({ length: TOTAL }).map(
-  (_, i) => `https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/apple-aether-hero-no-shadow/frame-${(i + 1).toString().padStart(4, "0")}.png`
+  (_, i) => `https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/apple-aether-hero-no-shadow/frame-${(i + 1).toString().padStart(4, "0")}.png`
 );
 
 export default function AetherHeroNoShadow() {

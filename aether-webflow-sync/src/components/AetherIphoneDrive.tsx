@@ -1523,10 +1523,10 @@ export default function AetherIphoneDrive() {
 		const gltfLoader = new GLTFLoader();
 		const textureLoader = new THREE.TextureLoader();
 		
-		const carTexture = textureLoader.load('https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-red.png');
+		const carTexture = textureLoader.load('https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/aether-3d/aether-3d-texture-red.png');
 		carTexture.flipY = false;
 		
-		gltfLoader.load('https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-4.glb', (gltf) => {
+		gltfLoader.load('https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/aether-3d/aether-3d-4.glb', (gltf) => {
 			const model = gltf.scene;
 			(carModel as any) = model; // Type assertion to bypass incorrect inference
 			model.traverse((child) => {

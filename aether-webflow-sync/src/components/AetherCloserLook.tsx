@@ -20,7 +20,7 @@ const TABS: AetherTab[] = [
   {
     id: "exterior",
     label: "Exterior",
-    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-exterior.png",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-exterior.png",
     headline: "Seamless design.",
     body: "Apple Aether is sculpted as one continuous surface, with refined aerodynamics to help it reach an incredibly low drag coefficiency.",
     isTransparent: true
@@ -28,35 +28,35 @@ const TABS: AetherTab[] = [
   {
     id: "interior",
     label: "Interior",
-    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-interior.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-interior.webp",
     headline: "Space, reimagined.",
     body: "A calm interior where controls appear only when needed, and every surface is designed to reduce noise, distraction, and effort.",
   },
   {
     id: "interface",
     label: "Interface",
-    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-interface.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-interface.webp",
     headline: "The interface that waits.",
     body: "Voice, touch, gesture, and spatial controls work together so information appears at the right time, in the right place.",
   },
   {
     id: "intelligence",
     label: "Intelligence",
-    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-intelligence.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-intelligence.webp",
     headline: "Intelligence, built in.",
     body: "Apple Aether continuously understands its surroundings, adapts to you, and works seamlessly across your Apple ecosystem.",
   },
   {
     id: "safety",
     label: "Safety",
-    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-safety.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-safety.webp",
     headline: "Confidence everywhere.",
     body: "Advanced sensing and intelligent assistance help every drive feel more aware, more responsive, and more at ease.",
   },
   {
     id: "charging",
     label: "Charging",
-    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-charging.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-charging.webp",
     headline: "Power, without the pause.",
     body: "Fast charging, smart scheduling, and route-aware energy guidance keep Aether ready when you are.",
   },
@@ -311,7 +311,7 @@ export default function AetherCloserLook() {
               <div className="acl-images">
                 <img 
                   ref={defaultImageRef}
-                  src="https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/take-a-look/aether-closer-look-default.png" 
+                  src="https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/aether-webflow-sync/public/take-a-look/aether-closer-look-default.png" 
                   alt="Apple Aether" 
                   className="acl-image img-transparent img-default" 
                 />
