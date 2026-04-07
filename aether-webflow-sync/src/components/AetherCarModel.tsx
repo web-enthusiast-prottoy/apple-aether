@@ -6,11 +6,11 @@ import * as THREE from "three";
 
 // Map each color value (from Aether3DConfigurator) to its texture file
 const COLOR_TEXTURE_MAP: Record<string, string> = {
-  "#0A0A0A": "/aether-3d/aether-3d-texture-black.png",
-  "#A9ACB1": "/aether-3d/aether-3d-texture-gray.png",
-  "#F5F5F7": "/aether-3d/aether-3d-texture-white.png",
-  "#8A0303": "/aether-3d/aether-3d-texture-red.png",
-  "#041C33": "/aether-3d/aether-3d-texture-blue.png",
+  "#0A0A0A": "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-black.png",
+  "#A9ACB1": "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-gray.png",
+  "#F5F5F7": "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-white.png",
+  "#8A0303": "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-red.png",
+  "#041C33": "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-blue.png",
 };
 
 const FADE_DURATION = 0.6; // seconds for crossfade
@@ -37,15 +37,15 @@ function prepTexture(tex: THREE.Texture): THREE.Texture {
 }
 
 export default function AetherCarModel({ color }: { color: string }) {
-  const { scene } = useGLTF("/aether-3d/aether-3d-4.glb");
+  const { scene } = useGLTF("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-4.glb");
 
   // Pre-load all 5 textures up-front for instant swaps
   const [tBlack, tGray, tWhite, tRed, tBlue] = useTexture([
-    "/aether-3d/aether-3d-texture-black.png",
-    "/aether-3d/aether-3d-texture-gray.png",
-    "/aether-3d/aether-3d-texture-white.png",
-    "/aether-3d/aether-3d-texture-red.png",
-    "/aether-3d/aether-3d-texture-blue.png",
+    "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-black.png",
+    "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-gray.png",
+    "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-white.png",
+    "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-red.png",
+    "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-blue.png",
   ]);
 
   const textureMap = useRef<Record<string, THREE.Texture>>({});
@@ -149,9 +149,9 @@ export default function AetherCarModel({ color }: { color: string }) {
 }
 
 // Pre-warm all assets on page load
-useGLTF.preload("/aether-3d/aether-3d-4.glb");
-useTexture.preload("/aether-3d/aether-3d-texture-black.png");
-useTexture.preload("/aether-3d/aether-3d-texture-gray.png");
-useTexture.preload("/aether-3d/aether-3d-texture-white.png");
-useTexture.preload("/aether-3d/aether-3d-texture-red.png");
-useTexture.preload("/aether-3d/aether-3d-texture-blue.png");
+useGLTF.preload("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-4.glb");
+useTexture.preload("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-black.png");
+useTexture.preload("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-gray.png");
+useTexture.preload("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-white.png");
+useTexture.preload("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-red.png");
+useTexture.preload("https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-3d/aether-3d-texture-blue.png");

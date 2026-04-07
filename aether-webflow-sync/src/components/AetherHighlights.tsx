@@ -4,25 +4,25 @@ import "./AetherHighlights.css";
 const SLIDES = [
   {
     id: 1,
-    image: "/aether-highlights/aether-slide-1.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-highlights/aether-slide-1.webp",
     headline: "Designed to move everything forward.",
     body: "Apple Aether brings electric performance, intelligent control, and a new sense of calm to the road.",
   },
   {
     id: 2,
-    image: "/aether-highlights/aether-slide-2.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-highlights/aether-slide-2.webp",
     headline: "Go farther between moments.",
     body: "Up to 720 km of all-electric driving, so the day keeps going.",
   },
   {
     id: 3,
-    image: "/aether-highlights/aether-slide-3.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-highlights/aether-slide-3.webp",
     headline: "A cabin that clears the noise.",
     body: "Controls appear only when you need them, creating a quieter, more intuitive driving experience.",
   },
   {
     id: 4,
-    image: "/aether-highlights/aether-slide-4.webp",
+    image: "https://raw.githubusercontent.com/web-enthusiast-prottoy/apple-aether/main/public/aether-highlights/aether-slide-4.webp",
     headline: "Awareness, built in.",
     body: "Advanced sensing, intelligent assistance, and seamless Apple ecosystem integration help every drive feel more effortless.",
   },

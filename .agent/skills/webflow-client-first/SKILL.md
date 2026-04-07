@@ -11,7 +11,12 @@ When creating HTML and CSS meant to be imported or injected into Webflow via our
 - **NO TAILWIND CSS**: Do not use Tailwind classes or the Tailwind compiler.
 - **NO CSS FRAMEWORKS**: No Bootstrap, Bulma, Foundation, or any other utility/UI framework.
 - **NO CSS-IN-JS / STYLED COMPONENTS**: Output must be standard HTML files and raw `.css` files.
-- **NO INLINE STYLES**: Do not use `style="..."` on HTML elements unless absolutely necessary for dynamic JavaScript interactions (like follow-mouse animations). All styling must remain in CSS files.
+- **NO INLINE STYLES**: Do not use `style="..."` on HTML elements. All styling must remain in CSS files.
+- **NO STYLE TAGS IN BODY**: No `<style>` tags are allowed inside the `<body>`. All styles must strictly reside in the `index.css` file.
+- **ALL SCRIPTS IN INDEX.JS**: All JavaScript must strictly reside in the `index.js` file. No `<script>` tags or inline scripts are allowed inside the HTML or `<body>` (except for the external link to `index.js`).
+- **NO PX UNITS**: Always write CSS in `rem`, never `px`. (Base: 1rem = 16px).
+- **NO CSS CHILD SELECTORS**: Do not use selectors like `.parent .child` or `.parent > .child`. Every element must have its own descriptive class (e.g., `.nav_link` instead of `.nav a`).
+- **NO COMBO CLASS OVERLOAD**: Never use more than two combo classes on a single element. If it needs more, create a new specific class.
 
 ## 🏛️ 2. FINSWEET CLIENT-FIRST METHODOLOGY
 
@@ -42,17 +47,20 @@ Every page or section you build MUST follow this exact nesting structure, and yo
 </main>
 ```
 
-### Component Naming Convention
+### Component Naming Convention & Constraints
 Custom components should be named intelligently:
 - Use **dash-case** or **lowercase** for the main component name (e.g., `.header_component`, `.slider`).
 - Children elements of the component are joined by an **underscore (`_`)** (e.g., `.header_title-wrapper`, `.slider_card`).
-- Example: `.feature-grid`, `.feature-grid_item`, `.feature-grid_icon-wrapper`.
+- **Strict Rule**: No CSS child selectors. Every tag must have its own class.
+    - ❌ `nav_links a { ... }`
+    - ✅ `.nav_links-link { ... }` (Class assigned directly to the `<a>` tag).
 
 ### Utility & Spacing Classes
 Use standard Client-First utility classes for margins, padding, and text.
 - **Spacing Add-ons**: `.margin-bottom`, `.margin-top`, `.padding-bottom`. Combine with size classes: `.margin-small`, `.margin-medium`, `.margin-large`.
     - E.g., `<div class="margin-bottom margin-medium">...</div>`
 - **Text Styles**: `.text-size-medium`, `.text-style-muted`, `.text-weight-bold`.
+- **Max 2 Classes**: An element can have at most one utility + one combo class, or two combo classes.
 
 ## 🎨 3. CSS VARIABLES & ARCHITECTURE
 
@@ -60,55 +68,71 @@ You must declare a comprehensive CSS Variable block in the `:root` to map cleanl
 
 ```css
 :root {
-  /* Colors */
-  --color-primary: #000000;
-  --color-secondary: #ffffff;
-  --color-brand: #ff0000;
+  /* Core Finsweet Variables - STRICTLY FOLLOW THIS STRUCTURE */
+  /* Background Colors */
+  --background-color-main: #ffffff;
+  --background-color-secondary: #f4f4f4;
   
-  /* Typography */
-  --font-family-sans: 'Inter', sans-serif;
+  /* Text Colors */
+  --text-color-main: #000000;
+  --text-color-secondary: #666666;
+  
+  /* Border Colors */
+  --border-color-main: #e0e0e0;
+
+  /* Typography Sizes - ALWAYS IN REM */
   --font-size-base: 1rem;
   --font-size-h1: 3.5rem;
+  --font-size-h2: 2.5rem;
+  --font-size-h3: 2rem;
   
-  /* Spacing */
-  --space-small: 1rem;
-  --space-medium: 2rem;
-  --space-large: 4rem;
+  /* Spacing - ALWAYS IN REM */
+  --space-small: 0.5rem;
+  --space-medium: 1rem;
+  --space-large: 2rem;
+  --space-xlarge: 4rem;
+
+  /* Repeated Styles - Use variables for EVERYTHING repeated */
+  --border-radius-main: 0.5rem;
+  --transition-main: all 200ms ease;
 }
 ```
 
-Apply these variables inside your Client-First global and component classes.
+Apply these variables inside your Client-First global and component classes. **Never use hardcoded px values.**
 
 ```css
 /* Core Client-First Global Rules */
 .padding-global {
-  padding-left: var(--space-medium);
-  padding-right: var(--space-medium);
+  padding-left: var(--padding-global-horizontal); /* Defined in variables */
+  padding-right: var(--padding-global-horizontal);
 }
 .container-large {
-  max-width: 1200px;
+  max-width: 80rem; /* 1280px */
   margin-left: auto;
   margin-right: auto;
 }
 .padding-section-large {
-  padding-top: var(--space-large);
-  padding-bottom: var(--space-large);
+  padding-top: var(--space-xlarge);
+  padding-bottom: var(--space-xlarge);
 }
 
 /* Component Rules */
 .hero_title {
-  font-family: var(--font-family-sans);
   font-size: var(--font-size-h1);
-  color: var(--color-primary);
+  color: var(--text-color-main);
 }
 ```
 
 ## 🚀 4. INSTRUCTION CHECKLIST FOR AI AGENT
 Before generating output:
 - [ ] Are all Tailwind classes completely removed?
-- [ ] Is every class strictly vanilla CSS?
+- [ ] Are there **ZERO** `<style>` tags anywhere in the body? Are all styles in `index.css`?
+- [ ] Are there **ZERO** `<script>` tags anywhere in the body (except for the src link)? Are all scripts in `index.js`?
+- [ ] Are fixed `px` values replaced with `rem`? (1rem = 16px base)
 - [ ] Does the page use the `.page-wrapper` > `.main-wrapper` > `.section_*` > `.padding-global` > `.container-*` structure?
-- [ ] Are elements using Client-First `_` notation for nesting?
-- [ ] Are there semantic HTML tags being used correctly?
+- [ ] Is every element given its own class (NO child selectors like `.nav a`)?
+- [ ] Are combo classes limited to a maximum of two?
+- [ ] are all colors, spacings, and repeated styles mapped to CSS variables?
+- [ ] Are semantic HTML tags being used correctly?
 
 Doing this ensures smooth mapping when the Webflow API injects our CSS rules and DOM elements into the Designer.
