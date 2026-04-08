@@ -14,7 +14,8 @@ When creating HTML and CSS meant to be imported or injected into Webflow via our
 - **NO INLINE STYLES**: Do not use `style="..."` on HTML elements. All styling must remain in CSS files.
 - **NO STYLE TAGS IN BODY**: No `<style>` tags are allowed inside the `<body>`. All styles must strictly reside in the `index.css` file.
 - **ALL SCRIPTS IN INDEX.JS**: All JavaScript must strictly reside in the `index.js` file. No `<script>` tags or inline scripts are allowed inside the HTML or `<body>` (except for the external link to `index.js`).
-- **NO PX UNITS**: Always write CSS in `rem`, never `px`. (Base: 1rem = 16px).
+- **NO PX UNITS**: Always write CSS in `rem` or `clamp()` using `rem`/`vw`, never `px`. (Base: 1rem = 16px).
+- **FLUID HEADINGS**: All headings (H1-H6) must use fluid `clamp()` values for font-size to ensure responsiveness without media queries.
 - **NO CSS CHILD SELECTORS**: Do not use selectors like `.parent .child` or `.parent > .child`. Every element must have its own descriptive class (e.g., `.nav_link` instead of `.nav a`).
 - **NO COMBO CLASS OVERLOAD**: Never use more than two combo classes on a single element. If it needs more, create a new specific class.
 
@@ -48,12 +49,24 @@ Every page or section you build MUST follow this exact nesting structure, and yo
 ```
 
 ### Component Naming Convention & Constraints
-Custom components should be named intelligently:
-- Use **dash-case** or **lowercase** for the main component name (e.g., `.header_component`, `.slider`).
-- Children elements of the component are joined by an **underscore (`_`)** (e.g., `.header_title-wrapper`, `.slider_card`).
+Custom components should be named intelligently and tied to their parent section:
+- **Section-Based Prefixing**: If a component is inside a section named `.section_[name]`, all children classes MUST start with `[name]_`.
+    - Example parent: `.section_hero`
+    - Correct children: `.hero_component`, `.hero_wrapper`, `.hero_title`
+- **Child Joining**: Children elements are joined by an **underscore (`_`)** (e.g., `.hero_card`, `.footer_logo`).
+- **Dash for Modifiers**: Use a single dash for word separation within an element name (e.g., `.hero_title-wrapper`).
 - **Strict Rule**: No CSS child selectors. Every tag must have its own class.
-    - ❌ `nav_links a { ... }`
-    - ✅ `.nav_links-link { ... }` (Class assigned directly to the `<a>` tag).
+    - ❌ `.hero_links a { ... }`
+    - ✅ `.hero_link { ... }` (Class assigned directly to the `<a>` tag).
+
+### 🔘 Buttons & CTA Standards (Client-First)
+All buttons must follow the modular combo-class system:
+- **Base Class**: `.button` (Handles core padding, transition, font-weight, etc.)
+- **Primary**: Just `.button` (default design).
+- **Secondary**: `.button` + `.is-secondary` (combo class).
+- **Alternate**: `.button` + `.is-alternate`.
+- **Icon Buttons**: `.button` + `.is-icon`.
+- **Text Link**: `.button-text` (for links that look like text but follow button spacing).
 
 ### Utility & Spacing Classes
 Use standard Client-First utility classes for margins, padding, and text.
@@ -80,11 +93,14 @@ You must declare a comprehensive CSS Variable block in the `:root` to map cleanl
   /* Border Colors */
   --border-color-main: #e0e0e0;
 
-  /* Typography Sizes - ALWAYS IN REM */
+  /* Typography Sizes - FLUID CLAMP (Min, Preferred, Max) */
   --font-size-base: 1rem;
-  --font-size-h1: 3.5rem;
-  --font-size-h2: 2.5rem;
-  --font-size-h3: 2rem;
+  --font-size-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --font-size-h2: clamp(2rem, 4vw + 1rem, 3.5rem);
+  --font-size-h3: clamp(1.75rem, 3vw + 1rem, 2.75rem);
+  --font-size-h4: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  --font-size-h5: clamp(1.25rem, 1vw + 1rem, 1.75rem);
+  --font-size-h6: clamp(1rem, 0.5vw + 1rem, 1.5rem);
   
   /* Spacing - ALWAYS IN REM */
   --space-small: 0.5rem;
@@ -129,6 +145,9 @@ Before generating output:
 - [ ] Are there **ZERO** `<style>` tags anywhere in the body? Are all styles in `index.css`?
 - [ ] Are there **ZERO** `<script>` tags anywhere in the body (except for the src link)? Are all scripts in `index.js`?
 - [ ] Are fixed `px` values replaced with `rem`? (1rem = 16px base)
+- [ ] Do all headings (H1-H6) use fluid `clamp()` typography variables?
+- [ ] Do child classes start with the section prefix (e.g., `.section_hero` -> `.hero_wrapper`)?
+- [ ] Do all buttons follow the `.button` + `.is-[modifier]` combo class pattern?
 - [ ] Does the page use the `.page-wrapper` > `.main-wrapper` > `.section_*` > `.padding-global` > `.container-*` structure?
 - [ ] Is every element given its own class (NO child selectors like `.nav a`)?
 - [ ] Are combo classes limited to a maximum of two?
