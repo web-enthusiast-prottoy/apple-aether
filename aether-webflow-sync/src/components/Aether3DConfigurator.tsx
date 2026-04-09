@@ -1,7 +1,7 @@
 
 import { Suspense, useState, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { PerformanceMonitor, PresentationControls, Stage } from "@react-three/drei";
+import { PerformanceMonitor, OrbitControls, Stage } from "@react-three/drei";
 import AetherCarModel from "./AetherCarModel";
 import "./Aether3DConfigurator.css";
 
@@ -33,19 +33,18 @@ export default function Aether3DConfigurator() {
     });
   };
 
-  const [hasBeenInView, setHasBeenInView] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Only mount and render the 3D canvas when this section is actively visible
-    // This entirely frees up the GPU WebGL thread for the rest of the site!
+    setMounted(true);
+    // Only detect when active to save GPU frameloop, but KEEP it mounted.
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           setInView(entry.isIntersecting);
-          if (entry.isIntersecting) setHasBeenInView(true);
         });
       },
-      { rootMargin: "400px" } // Pre-load 400px before it enters the viewport
+      { rootMargin: "600px" } // Pre-load further ahead
     );
 
     if (containerRef.current) observer.observe(containerRef.current);
@@ -95,29 +94,31 @@ export default function Aether3DConfigurator() {
         </div>
       </div>
 
-      {/* 3D Canvas - Persistent once loaded */}
+      {/* 3D Canvas - Mount unconditional to precompile shaders, but pause loop when out of view. Only render on client to avoid SSR crash. */}
       <div className="config-canvas-container" style={{ transform: "scale(0.99) translateY(-5%)" }}>
-        {hasBeenInView && (
+        {mounted && (
           <Canvas 
             shadows 
             dpr={dpr as [number, number]} 
             camera={{ position: [4, 1.5, 6], fov: 32 }}
             // Use 'demand' or 'never' when not in view to save GPU cycles without unmounting
             frameloop={inView ? "always" : "demand"}
+            style={{ touchAction: 'pan-y', pointerEvents: 'auto' }}
           >
             <PerformanceMonitor onDecline={() => setDpr([1, 1])} onIncline={() => setDpr([1, 2])}>
               <Suspense fallback={null}>
-                <PresentationControls 
-                  speed={2} 
-                  global 
-                  zoom={0.8} 
-                  polar={[-0.1, Math.PI / 8]} 
-                  azimuth={[-Infinity, Infinity]} 
-                >
-                  <Stage environment="city" intensity={0.6} shadows={false}>
-                    <AetherCarModel color={currentColor.value} />
-                  </Stage>
-                </PresentationControls>
+                <OrbitControls 
+                  enableZoom={false}
+                  enablePan={false}
+                  minPolarAngle={Math.PI / 2.5}
+                  maxPolarAngle={Math.PI / 2 + Math.PI / 8}
+                  autoRotate={false}
+                  enableDamping={true}
+                  dampingFactor={0.05}
+                />
+                <Stage environment="city" intensity={0.6} shadows={false}>
+                  <AetherCarModel color={currentColor.value} />
+                </Stage>
               </Suspense>
             </PerformanceMonitor>
           </Canvas>
