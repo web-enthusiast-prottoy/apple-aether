@@ -42,9 +42,11 @@ export default function AetherHeroAlternative() {
     };
 
     const initGSAP = async () => {
-      // Dynamic import so it's client-only
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      const gsap = (window as any).gsap;
+      const ScrollTrigger = (window as any).ScrollTrigger;
+      
+      if (!gsap || !ScrollTrigger) return;
+      
       gsap.registerPlugin(ScrollTrigger);
 
       const section = sectionRef.current;

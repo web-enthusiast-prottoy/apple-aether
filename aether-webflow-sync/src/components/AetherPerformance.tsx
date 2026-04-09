@@ -1,8 +1,11 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
+const gsap = (window as any).gsap;
+const ScrollTrigger = (window as any).ScrollTrigger;
+
+if (gsap && ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const STATS = [
     { value: 2.1, unit: "s", label: "0–100 km/h", decimals: 1 },

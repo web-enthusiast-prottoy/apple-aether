@@ -107,9 +107,9 @@ export default function AetherHero() {
     };
 
     const initGSAP = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      if (isCanceled) return;
+      const gsap = (window as any).gsap;
+      const ScrollTrigger = (window as any).ScrollTrigger;
+      if (isCanceled || !gsap || !ScrollTrigger) return;
 
       gsap.registerPlugin(ScrollTrigger);
 

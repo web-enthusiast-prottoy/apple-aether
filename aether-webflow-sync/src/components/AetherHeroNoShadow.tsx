@@ -125,17 +125,16 @@ export default function AetherHeroNoShadow() {
     let ctx: any;
 
     const initGSAP = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      const gsap = (window as any).gsap;
+      const ScrollTrigger = (window as any).ScrollTrigger;
+      
+      if (!gsap || !ScrollTrigger) return;
+      
       gsap.registerPlugin(ScrollTrigger);
-
       const section = sectionRef.current;
       const textLeft = textLeftRef.current;
       const textRight = textRightRef.current;
       if (!section || !textLeft || !textRight) return;
-
-      // Ensure fresh calculation
-      ScrollTrigger.refresh();
 
       ctx = gsap.context(() => {
         const proxy = { frame: 0 };
@@ -167,8 +166,6 @@ export default function AetherHeroNoShadow() {
         // Split text animation without fade
         tl.to(textLeft, { x: "-40vw", ease: "power2.inOut" }, 0);
         tl.to(textRight, { x: "40vw", ease: "power2.inOut" }, 0);
-        
-        ScrollTrigger.refresh();
       });
 
       gsapCleanupRef.current = () => ctx && ctx.revert();

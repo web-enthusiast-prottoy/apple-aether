@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./AetherCloserLook.css";
 
-if (typeof window !== "undefined") {
+const gsap = (window as any).gsap;
+const ScrollTrigger = (window as any).ScrollTrigger;
+
+if (typeof window !== "undefined" && gsap && ScrollTrigger) {
   gsap.registerPlugin(ScrollTrigger);
 }
 

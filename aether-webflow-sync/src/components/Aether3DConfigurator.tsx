@@ -3,8 +3,9 @@ import { Suspense, useState, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { PerformanceMonitor, PresentationControls, Stage } from "@react-three/drei";
 import AetherCarModel from "./AetherCarModel";
-import gsap from "gsap";
 import "./Aether3DConfigurator.css";
+
+const gsap = (window as any).gsap;
 
 const COLORS = [
   { name: "Obsidian Black", value: "#0A0A0A", hex: "#1A1A1A" },

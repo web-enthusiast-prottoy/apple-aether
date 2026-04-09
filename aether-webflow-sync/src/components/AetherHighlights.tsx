@@ -71,7 +71,8 @@ export default function AetherHighlights() {
     let observer: IntersectionObserver;
     
     const initGSAP = async () => {
-      const { gsap } = await import("gsap");
+      const gsap = (window as any).gsap;
+      if (!gsap) return;
       gsapRef.current = gsap;
       
       ctx = gsap.context(() => {

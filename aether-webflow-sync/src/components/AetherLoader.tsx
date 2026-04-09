@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+
+const gsap = (window as any).gsap;
 
 export default function AetherLoader({ onComplete }: { onComplete?: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
