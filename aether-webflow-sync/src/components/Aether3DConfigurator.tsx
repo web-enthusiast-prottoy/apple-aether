@@ -33,6 +33,8 @@ export default function Aether3DConfigurator() {
     });
   };
 
+  const [hasBeenInView, setHasBeenInView] = useState(false);
+
   useEffect(() => {
     // Only mount and render the 3D canvas when this section is actively visible
     // This entirely frees up the GPU WebGL thread for the rest of the site!
@@ -40,9 +42,10 @@ export default function Aether3DConfigurator() {
       (entries) => {
         entries.forEach((entry) => {
           setInView(entry.isIntersecting);
+          if (entry.isIntersecting) setHasBeenInView(true);
         });
       },
-      { rootMargin: "0px" } 
+      { rootMargin: "400px" } // Pre-load 400px before it enters the viewport
     );
 
     if (containerRef.current) observer.observe(containerRef.current);
@@ -92,10 +95,16 @@ export default function Aether3DConfigurator() {
         </div>
       </div>
 
-      {/* 3D Canvas - Lazily Mounted */}
+      {/* 3D Canvas - Persistent once loaded */}
       <div className="config-canvas-container" style={{ transform: "scale(0.99) translateY(-5%)" }}>
-        {inView && (
-          <Canvas shadows dpr={dpr as [number, number]} camera={{ position: [4, 1.5, 6], fov: 32 }}>
+        {hasBeenInView && (
+          <Canvas 
+            shadows 
+            dpr={dpr as [number, number]} 
+            camera={{ position: [4, 1.5, 6], fov: 32 }}
+            // Use 'demand' or 'never' when not in view to save GPU cycles without unmounting
+            frameloop={inView ? "always" : "demand"}
+          >
             <PerformanceMonitor onDecline={() => setDpr([1, 1])} onIncline={() => setDpr([1, 2])}>
               <Suspense fallback={null}>
                 <PresentationControls 
@@ -109,13 +118,12 @@ export default function Aether3DConfigurator() {
                     <AetherCarModel color={currentColor.value} />
                   </Stage>
                 </PresentationControls>
-
-
               </Suspense>
             </PerformanceMonitor>
           </Canvas>
         )}
       </div>
+
     </section>
   );
 }
