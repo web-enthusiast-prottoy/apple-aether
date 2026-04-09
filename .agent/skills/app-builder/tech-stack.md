@@ -2,21 +2,18 @@
 
 > Default and alternative technology choices for web applications.
 
-## Default Stack (Web App - 2026)
+## Primary Stack (Web App - 2026)
 
 ```yaml
 Frontend:
-  framework: Next.js 16 (Stable)
+  framework: Next.js 16 (Full-stack) / React + Vite (Webflow Sync)
   language: TypeScript 5.7+
-  styling: Tailwind CSS v4
-  state: React 19 Actions / Server Components
-  caching: Next.js 16 Cache Components (Stable)
-  bundler: Turbopack (Stable for Dev & Build)
+  styling: Vanilla CSS (Client-First) for Webflow / Tailwind v4 for Apps
+  bundler: Vite (Preferred for Webflow) / Turbopack (Next.js)
 
 Backend:
   runtime: Node.js 23
   framework: Next.js API Routes / Hono (for Edge)
-  validation: Zod / TypeBox
 
 Database:
   primary: PostgreSQL
@@ -25,9 +22,15 @@ Database:
 
 Auth:
   provider: Auth.js (v5) / Clerk
+```
 
-Monorepo:
-  tool: Turborepo 2.0
+## Webflow Sync Strategy
+
+```yaml
+Framework: React 19 + Vite
+Styling: Vanilla CSS (Finsweet Client-First)
+Build: npm run build (Single HTML/JS/CSS output)
+Requirement: Clean, semantic HTML and CSS for direct import.
 ```
 
 ## Alternative Options

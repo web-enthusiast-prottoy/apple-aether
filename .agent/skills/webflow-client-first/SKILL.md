@@ -134,11 +134,39 @@ Apply these variables inside your Client-First global and component classes. **N
 }
 ```
 
-## 🚀 4. INSTRUCTION CHECKLIST FOR AI AGENT
+## 🚀 4. REACT + VITE BUILD CONFIGURATION
+| Element | Requirement | Why |
+|---------|-------------|-----|
+| **Vite Plugin** | `vite-plugin-singlefile` (Optional) | Can merge CSS/JS into HTML for easier copy-paste. |
+| **Asset URLs** | Relative or absolute CDN links | Webflow cannot host dynamic assets from `dist/` without upload. |
+| **Entry Point** | `main.tsx` → `index.js` | Ensure the build output matches the expected single JS file. |
+
+### Recommended `vite.config.ts`:
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
+      },
+    },
+  },
+});
+```
+
+## 🚀 5. INSTRUCTION CHECKLIST FOR AI AGENT
 
 Before generating output:
 
 - [ ] Are all Tailwind classes completely removed?
+- [ ] Are they built using **React + Vite** for the final output?
 - [ ] Are there **ZERO** `<style>` tags anywhere in the body? Are all styles in `index.css`?
 - [ ] Are there **ZERO** `<script>` tags anywhere in the body (except for the src link)? Are all scripts in `index.js`?
 - [ ] Are fixed `px` values replaced with `rem`? (1rem = 16px base)
@@ -146,7 +174,6 @@ Before generating output:
 - [ ] Does the page use the `.page-wrapper` > `.main-wrapper` > `.section_*` > `.padding-global` > `.container-*` structure?
 - [ ] Is every element given its own class (NO child selectors like `.nav a`)?
 - [ ] Are combo classes limited to a maximum of two?
-- [ ] are all colors, spacings, and repeated styles mapped to CSS variables?
+- [ ] Are all colors, spacings, and repeated styles mapped to CSS variables?
 - [ ] Are semantic HTML tags being used correctly?
-
-Doing this ensures smooth mapping when the Webflow API injects our CSS rules and DOM elements into the Designer.
+- [ ] Does `npm run build` generate clean, standard HTML/JS/CSS files?

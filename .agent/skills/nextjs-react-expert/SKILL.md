@@ -1,13 +1,13 @@
 ---
 name: react-best-practices
-description: React and Next.js performance optimization from Vercel Engineering. Use when building React components, optimizing performance, eliminating waterfalls, reducing bundle size, reviewing code for performance issues, or implementing server/client-side optimizations.
+description: React (Vite & Next.js) performance optimization and Webflow sync expert. Use when building React components, optimizing performance, or preparing React + Vite projects for Webflow export.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
-# Next.js & React Performance Expert
+# React, Vite & Next.js Expert
 
-> **From Vercel Engineering** - 57 optimization rules prioritized by impact
-> **Philosophy:** Eliminate waterfalls first, optimize bundles second, then micro-optimize.
+> **Optimized for both Webflow Sync and standard Apps.**
+> **Philosophy:** Eliminate waterfalls first, optimize bundles for clean exports, then micro-optimize.
 
 ---
 

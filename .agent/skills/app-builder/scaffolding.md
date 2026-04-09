@@ -116,3 +116,30 @@ project-name/
 | Reusable button/input | `shared/components/ui/` |
 | Database query | `server/db/` |
 | External API call | `server/services/` |
+ 
+ ---
+ 
+ ## React + Vite (Webflow Sync) Structure
+ 
+ ```
+ project-name/
+ ├── src/
+ │   ├── components/                 # React components (Clean for Webflow)
+ │   │   ├── header/
+ │   │   ├── hero/
+ │   │   └── footer/
+ │   ├── styles/                     # Vanilla CSS (Finsweet Client-First)
+ │   │   ├── global.css              # Main variables and structural classes
+ │   │   └── components.css          # Component-specific styles
+ │   ├── assets/                     # Images, icons
+ │   ├── hooks/                      # Custom React hooks
+ │   ├── main.tsx                    # Entry point
+ │   └── App.tsx                     # Main layout
+ ├── public/                         # Static assets
+ ├── dist/                           # Build output (Clean HTML/JS/CSS)
+ ├── index.html                      # HTML Template
+ ├── package.json                    # npm run build: vite build
+ ├── vite.config.ts                  # Vite configuration for clean export
+ ├── tsconfig.json                   # TypeScript config
+ └── README.md
+ ```
