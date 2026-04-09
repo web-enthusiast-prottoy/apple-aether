@@ -77394,7 +77394,8 @@ function Tk() {
                                                         ],
                                                     }),
                                                 ne.jsxs("div", {
-                                                    className: "flex-1 min-h-0",
+                                                    className:
+                                                        "aether-drive_objects",
                                                     children: [
                                                         ne.jsxs("div", {
                                                             className:
