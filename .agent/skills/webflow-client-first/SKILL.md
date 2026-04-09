@@ -5,153 +5,108 @@ description: Rules and guidelines for generating HTML/CSS code tailored for flaw
 
 # Webflow Client-First Integration Guidelines
 
-When creating HTML and CSS meant to be imported or injected into Webflow via our code-to-webflow parser, it is **MANDATORY** to follow these rules.
+When creating HTML and CSS meant to be imported or injected into Webflow via our code-to-webflow parser, it is **MANDATORY** to follow these rules based strictly on the official *Finsweet Client-First* documentation.
 
 ## 🚫 1. THE ABSOLUTE BANS
 - **NO TAILWIND CSS**: Do not use Tailwind classes or the Tailwind compiler.
 - **NO CSS FRAMEWORKS**: No Bootstrap, Bulma, Foundation, or any other utility/UI framework.
 - **NO CSS-IN-JS / STYLED COMPONENTS**: Output must be standard HTML files and raw `.css` files.
-- **NO INLINE STYLES**: Do not use `style="..."` on HTML elements. All styling must remain in CSS files.
-- **NO STYLE TAGS IN BODY**: No `<style>` tags are allowed inside the `<body>`. All styles must strictly reside in the `index.css` file.
-- **ALL SCRIPTS IN INDEX.JS**: All JavaScript must strictly reside in the `index.js` file. No `<script>` tags or inline scripts are allowed inside the HTML or `<body>` (except for the external link to `index.js`).
+- **NO INLINE STYLES**: Do not use `style="..."` on HTML elements.
+- **NO STYLE TAGS IN BODY**: No `<style>` tags are allowed inside the `<body>`.
 - **NO PX UNITS**: Always write CSS in `rem` or `clamp()` using `rem`/`vw`, never `px`. (Base: 1rem = 16px).
-- **FLUID HEADINGS**: All headings (H1-H6) must use fluid `clamp()` values for font-size to ensure responsiveness without media queries.
+- **FLUID HEADINGS**: All headings (H1-H6) must use fluid `clamp()` values for font-size.
 - **NO CSS CHILD SELECTORS**: Do not use selectors like `.parent .child` or `.parent > .child`. Every element must have its own descriptive class (e.g., `.nav_link` instead of `.nav a`).
-- **NO COMBO CLASS OVERLOAD**: Never use more than two combo classes on a single element. If it needs more, create a new specific class.
+- **NO COMBO CLASS OVERLOAD**: Never "deep stack" classes. If an element requires more than a base class + one combo class, merge them into a single custom class.
 
 ## 🏛️ 2. FINSWEET CLIENT-FIRST METHODOLOGY
 
-You must style elements using **pure Vanilla CSS** following the **Finsweet Client-First** naming convention. This guarantees the structure will map correctly to Webflow's class system.
-
 ### Core Structure Wrappers
-Every page or section you build MUST follow this exact nesting structure, and you must use these exact class names:
+Every page MUST follow this exact nesting structure.
+*(Updated to Client-First v2.1: `padding-section-[size]` is now applied combining with `padding-global` to reduce nesting)*:
 
-1. **`.page-wrapper`**: Wraps the entire visible page content.
-2. **`.main-wrapper`**: Wraps the main `<main>` content area (excluding fixed navs/footers).
-3. **`.section_[name]`**: Wraps a specific section (e.g., `.section_hero`, `.section_features`).
+1. **`.page-wrapper`**: Outermost parent of all elements on the page.
+2. **`.main-wrapper`**: Wraps the main `<main>` content area.
+3. **`.section_[name]`**: Wraps a specific section using the `<section>` HTML tag (e.g., `.section_hero`).
 4. **`.padding-global`**: Handles global left/right padding across all breakpoints.
-5. **`.container-[size]`**: Handles the max-width and centering of the content (e.g., `.container-large`).
-6. **`.padding-section-[size]`**: Handles the top/bottom padding for the section (e.g., `.padding-section-large`).
+5. **`.padding-section-[size]`**: Handles top and bottom padding for the section globally. Combine this on the same div as `.padding-global`. Sizes: `small` (3rem), `medium` (5rem), `large` (8rem).
+6. **`.container-[size]`**: Handles the max-width and centering of the content (e.g., `.container-small`, `.container-medium`, `.container-large`).
 
 **Example Structure:**
 ```html
 <main class="main-wrapper">
   <section class="section_hero">
-    <div class="padding-global">
+    <div class="padding-global padding-section-large">
       <div class="container-large">
-        <div class="padding-section-large">
-          <!-- Component goes here -->
-        </div>
+        <!-- Component goes here -->
       </div>
     </div>
   </section>
 </main>
 ```
 
+### Class Naming Types & Folders
+Webflow organizes rules natively using these conventions:
+- **Utility Classes**: Use dashes (`-`) only (e.g., `.text-size-large`). Global by nature.
+- **Global Classes**: Can use `-` or `_`. Categorize repeating elements (e.g., `.faq_item`).
+- **Custom Classes (Folders)**: Use **exactly one underscore (`_`)**. The first word before the underscore forms the Webflow Folder. E.g., `.folder-name_element-name`.
+- **Combo Classes**: Variant wrappers. Must use the prefix `is-` (e.g., `.button.is-brand`).
+
 ### Component Naming Convention & Constraints
-Custom components should be named intelligently and tied to their parent section:
-- **Section-Based Prefixing**: If a component is inside a section named `.section_[name]`, all children classes MUST start with `[name]_`.
-    - Example parent: `.section_hero`
-    - Correct children: `.hero_component`, `.hero_wrapper`, `.hero_title`
-- **Child Joining**: Children elements are joined by an **underscore (`_`)** (e.g., `.hero_card`, `.footer_logo`).
-- **Dash for Modifiers**: Use a single dash for word separation within an element name (e.g., `.hero_title-wrapper`).
-- **Strict Rule**: No CSS child selectors. Every tag must have its own class.
-    - ❌ `.hero_links a { ... }`
-    - ✅ `.hero_link { ... }` (Class assigned directly to the `<a>` tag).
+Custom components must be tied functionally to their parent section and placed in folders:
+- **Section-Based Prefixing**: If a component is inside `.section_hero`, all children classes MUST start with `hero_` to place them in the Hero folder.
+    - ✅ `.hero_component`, `.hero_wrapper`, `.hero_title`
+- **Dash for Modifiers**: Use a single dash for word separation within the element name after the folder prefix (e.g., `.team-list_headshot-wrapper`).
+- **Strict Rule**: No CSS child selectors. Assign classes directly to tags.
 
-### 🔘 Buttons & CTA Standards (Client-First)
+### 🔘 Buttons & CTA Standards
 All buttons must follow the modular combo-class system:
-- **Base Class**: `.button` (Handles core padding, transition, font-weight, etc.)
-- **Primary**: Just `.button` (default design).
-- **Secondary**: `.button` + `.is-secondary` (combo class).
-- **Alternate**: `.button` + `.is-alternate`.
-- **Icon Buttons**: `.button` + `.is-icon`.
-- **Text Link**: `.button-text` (for links that look like text but follow button spacing).
+- **Base Class**: `.button`
+- **Combo Classes**: `.button.is-secondary`, `.button.is-alternate`, `.button.is-icon`.
+- **Text Link**: `.button-text`
+- **Icon Sizing**: `.icon-small`, `.icon-medium`, `.icon-[size]`.
 
-### Utility & Spacing Classes
-Use standard Client-First utility classes for margins, padding, and text.
-- **Spacing Add-ons**: `.margin-bottom`, `.margin-top`, `.padding-bottom`. Combine with size classes: `.margin-small`, `.margin-medium`, `.margin-large`.
-    - E.g., `<div class="margin-bottom margin-medium">...</div>`
-- **Text Styles**: `.text-size-medium`, `.text-style-muted`, `.text-weight-bold`.
-- **Max 2 Classes**: An element can have at most one utility + one combo class, or two combo classes.
+### 📝 Typography System
+- **Hierarchy is King**: Always respect SEO `H1-H6` tag order. 
+- **Style Overrides**: Use `.heading-style-h1`, `.heading-style-h2` if an `H3` needs to visually look like an `H1`.
+- **Text Utilities**: Use `.text-size-[size]` (`large`, `medium`, `regular`, `small`, `tiny`).
+- **Text Color**: `.text-color-primary`, `.text-color-secondary`, `.text-color-neutral`.
+- **Text Weight**: `.text-weight-light`, `.text-weight-normal`, `.text-weight-semibold`, `.text-weight-bold`, `.text-weight-xbold`.
+- **Text Alignment**: `.text-align-left`, `.text-align-center`, `.text-align-right`.
+
+### 📏 Spacing & Sizing Strategies
+- **Spacing Wrappers**: Apply `padding-[direction] padding-[size]` or `margin-[direction] margin-[size]` natively on elements. Sizes range from `tiny` to `xxhuge` and `0`. 
+- **Spacer Blocks**: Instead of margins on components, use an empty div with `.spacer-[size]` to separate vertical elements cleanly. 
+- **Max Widths**: `.max-width-[size]` (e.g., `max-width-large`, `max-width-full`).
+- **Visibility Checks**: `.hide`, `.hide-tablet`, `.hide-mobile-[orientation]`.
 
 ## 🎨 3. CSS VARIABLES & ARCHITECTURE
-
-You must declare a comprehensive CSS Variable block in the `:root` to map cleanly to Webflow's variable system.
+Ensure CSS is completely fluid and natively defined at `:root` in `index.css`:
 
 ```css
 :root {
-  /* Core Finsweet Variables - STRICTLY FOLLOW THIS STRUCTURE */
-  /* Background Colors */
-  --background-color-main: #ffffff;
-  --background-color-secondary: #f4f4f4;
-  
-  /* Text Colors */
-  --text-color-main: #000000;
-  --text-color-secondary: #666666;
-  
-  /* Border Colors */
-  --border-color-main: #e0e0e0;
-
-  /* Typography Sizes - FLUID CLAMP (Min, Preferred, Max) */
+  /* Typography Sizes - FLUID CLAMP */
   --font-size-base: 1rem;
   --font-size-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
   --font-size-h2: clamp(2rem, 4vw + 1rem, 3.5rem);
   --font-size-h3: clamp(1.75rem, 3vw + 1rem, 2.75rem);
-  --font-size-h4: clamp(1.5rem, 2vw + 1rem, 2.25rem);
-  --font-size-h5: clamp(1.25rem, 1vw + 1rem, 1.75rem);
-  --font-size-h6: clamp(1rem, 0.5vw + 1rem, 1.5rem);
   
   /* Spacing - ALWAYS IN REM */
   --space-small: 0.5rem;
   --space-medium: 1rem;
   --space-large: 2rem;
   --space-xlarge: 4rem;
-
-  /* Repeated Styles - Use variables for EVERYTHING repeated */
-  --border-radius-main: 0.5rem;
-  --transition-main: all 200ms ease;
-}
-```
-
-Apply these variables inside your Client-First global and component classes. **Never use hardcoded px values.**
-
-```css
-/* Core Client-First Global Rules */
-.padding-global {
-  padding-left: var(--padding-global-horizontal); /* Defined in variables */
-  padding-right: var(--padding-global-horizontal);
-}
-.container-large {
-  max-width: 80rem; /* 1280px */
-  margin-left: auto;
-  margin-right: auto;
-}
-.padding-section-large {
-  padding-top: var(--space-xlarge);
-  padding-bottom: var(--space-xlarge);
-}
-
-/* Component Rules */
-.hero_title {
-  font-size: var(--font-size-h1);
-  color: var(--text-color-main);
 }
 ```
 
 ## 🚀 4. INSTRUCTION CHECKLIST FOR AI AGENT
 Before generating output:
 - [ ] Are all Tailwind classes completely removed?
-- [ ] Are there **ZERO** `<style>` tags anywhere in the body? Are all styles in `index.css`?
-- [ ] Are there **ZERO** `<script>` tags anywhere in the body (except for the src link)? Are all scripts in `index.js`?
-- [ ] Are fixed `px` values replaced with `rem`? (1rem = 16px base)
-- [ ] Do all headings (H1-H6) use fluid `clamp()` typography variables?
+- [ ] Are `px` values strictly replaced with `rem` / `clamp() / vw`?
+- [ ] Does the page use the v2.1 structure: `.page-wrapper` > `.main-wrapper` > `.section_*` > `.padding-global.padding-section-*` > `.container-*`?
+- [ ] Do custom classes contain **only one** underscore to create a Webflow Folder?
 - [ ] Do child classes start with the section prefix (e.g., `.section_hero` -> `.hero_wrapper`)?
-- [ ] Do all buttons follow the `.button` + `.is-[modifier]` combo class pattern?
-- [ ] Does the page use the `.page-wrapper` > `.main-wrapper` > `.section_*` > `.padding-global` > `.container-*` structure?
-- [ ] Is every element given its own class (NO child selectors like `.nav a`)?
-- [ ] Are combo classes limited to a maximum of two?
-- [ ] are all colors, spacings, and repeated styles mapped to CSS variables?
+- [ ] Are combo classes exclusively using the `is-` prefix (e.g., `.is-secondary`)?
+- [ ] Do all buttons follow the `.button` base class pattern?
+- [ ] Is SEO heading hierarchy preserved, overriding visual styles ONLY with `.heading-style-h*`?
+- [ ] Are spacing constraints resolved using `spacer-[size]` blocks or `margin/padding` utilities?
 - [ ] Are semantic HTML tags being used correctly?
-
-Doing this ensures smooth mapping when the Webflow API injects our CSS rules and DOM elements into the Designer.

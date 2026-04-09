@@ -1,0 +1,569 @@
+Client-F ir st
+Quick Guide
+Clas s e s
+Str ategy f or ho w to identif y , use , and manage classe s inside W ebflo w as a plat f orm.
+U tility Sho w in docs
+A utility class is cr e ated f or a specific combination 
+of CS S pr oper tie s, which can be applied to 
+elements acr oss the pr oject.
+Utility classe s use dashe s ‘-’ only .
+te xt-siz e-lar ge
+back gr ound-color -primar y
+U pdating a utility class will update all inst ance s in 
+the pr oject that use the utility class. It is ‘ global’ b y 
+natur e .
+is alw a ys
+Global Sho w in docs
+A global class is intended f or use acr oss the entir e 
+pr oject. It is a fur ther classification of the purpose of 
+a class. Utility classe s & custom classe s can be 
+global classe s.
+A global class can use ‘-’ or ‘_’
+he ader_back gr ound-la y er
+f aq_item
+Custom Sho w in docs
+A custom class cr e ated f or a specific and 
+identifiable component, page , gr ouping of 
+elements, or single element.
+Custom classe s use an under scor e ‘_’ to define the 
+“ custom f older name ” .
+he ader_back gr ound-la y er
+te stimonial-slider_he adshot
+B etter f or maint aining a pr oject as it’ s mor e fle xible 
+to change s. A v oid o v er -st acking classe s and making  
+site- wide mist ak e s. can be
+C ombo Sho w in docs
+A combo class is a v ariant to a base class. It inherits 
+style s fr om the base class and adds mor e style s on 
+top of it.
+U se pr efix ‘ is-’ to define a combo class.
+button is-br and
+he ader_content is-home
+U seful f or adding additional style s f or a specific 
+inst ance .
+add-on
+M e anin gf ul &  
+com p lete namin g
+Sho w in docs
+Class name s should sa y what the y do . T he name of a 
+class should ans w er the se que stions :
+" Wh a t is t h e p ur p o s e o f  t h is clas s in t h e p r o j ect ?
+"H o w  c an I  g i v e t h e mo st conte x t into wh a t t h is 
+clas s is r e s p onsible f or in t h e p r o j ect ?"
+G i v e classe s me aningful name s. 
+te stimonials_wr apper
+  Y e s
+D on not use obr e v iations.
+col- 2 -d fle x -mobile-a-c
+  N o
+Gener al →  to →  s p eci f ic  
+clas s namin g  con v ention
+te xt-siz e-lar ge
+T his class is used to style a te xt 
+element.
+T his class is used to style the siz e  
+of a te xt element.
+T his class is used to mak e the te xt siz e lar ge .
+te am-list_he adshot- wr apper
+Custom class f older name . T his is 
+the “ te am list” component r elated 
+to the te am page or a te am section.
+T his class is used f or the 
+he adshot element in the te am list.
+T his class is used f or the element wr apping 
+the he adshot element.
+U se this naming appr oach to st a y or ganiz ed. 
+Custom classe s f or the “ te am list” component ar e 
+gr ouped in the same f older .
+te am-list_component
+te am-list_he adshot-image
+te am-list_he adshot-te xtur e-la y er
+te am-list_he adshot-back gr ound
+P a g e structur e
+Str ategy f or the cor e structur e of e ach w eb page . Sho w in docs
+O utermost par ent of all elements 
+on the page .
+H elps to cop y / paste the entir e page to a di ff er ent 
+page or apply CS S style s to the entir e page . 
+W r aps an entir e section of content. H elps to or ganiz e W ebflo w N a v igator panel. H T ML  
+< section >  t ag is r ecommended. 
+H oriz ont al spacing of a page ' s content  U sed f or site- wide lef t and right outer 
+padding of e ach page .
+Sets a max - width f or all page content 
+and center s the content on the page .
+Include s 3  siz e s of max - width   ,  
+, and   .
+small
+medium lar ge
+T he “ main ” or page-specific 
+content of the page .
+U se a < main >  H T ML  t ag f or acce ssibility be st 
+pr actice .
+G lobal custom CS S f or the pr oject. O r ganiz e s all custom CS S snippets f or the entir e 
+pr ojects. Stor ed in a W ebflo w H T ML  embed as a s ymbol.
+T he na v  element specifie s a list of 
+na v igation link s.
+< na v >  H T ML  t ag is placed outside of the main- wr apper 
+since its content is not f or page-specific content.
+na v bar
+global-style s
+page- wr apper
+main- wr apper
+section_ [ identifier ]
+padding-global
+cont ainer - [ siz e ]
+Client-F ir st v er sion 2 . 1  U p da te
+T he  padding-section- [ siz e ]   utility class should be used on 
+the di v  block with the padding-global class applied to 
+r educe ne sting elements as e xample belo w :
+padding-section- [ si z e ]
+padding-section- [ siz e ]
+It helps to manage top and bottom padding 
+f or sections globally thr oughout the pr oject.
+padding-section-small
+padding-section-medium
+padding-section-lar ge
+3 r em
+5 r em
+8 r em
+Client-F ir st us e s RE M
+B uild acce ssible , fluid r e sponsi v e w ebsite s
+U s e r em Sho w in docs
+Wh a t is r em ?  T he r em unit is based on one thing 
+—  H T ML  r oot f ont siz e . B y def ault it’ s 16 p x
+Apply r em to all elements in Client- F ir st, including 
+typogr aph y , spacing, widths, and an y thing else 
+that r equir e s a siz e unit.
+1 r em =  16 p x ( f ont siz e of the r oot element ).
+U se Client- F ir st /  P X  to RE M  C alculator
+Y ou can also mak e a calculation str aight in the 
+Style field b y typing ‘ v alue / 16  r em ‘ and hit enter .
+P r o ti p :  U se ‘ P X  to RE M  migr ator ’ in F ins w eet 
+E xtension to con v er t e xisting pr ojects to r em. 
+A cce s sibility bene f it s Sho w in docs
+B r o wser s can z oom normally when a pr oject is built 
+in RE M .
+B r o wser f ont siz e settings that ar e modified b y end-
+user s will be r e spected.
+*  V W ,  V H  v alue s ar e not r e spected f or full 
+acce ssibility compliance .
+Fluid r e s p onsi v e 
+g ener a tor
+Sho w in docs
+V isually scale all elements on the page as the user 
+change s the siz e of the br o wser .
+M aint ain de sign and la y out acr oss all br o wser siz e s.
+T he fluid r e sponsi v e str ategy is an optional add-on. 
+A dd it, or don ' t add it, to an y pr oject. T he 
+implement ation r equir e s no w orkflo w change .
+F luid r e sponsi v e can be added at the end of the 
+pr oject af ter e v er y thing is de v eloped.
+S t ackin g
+L e ss st acking gi v e s mor e contr ol
+M inimal st ackin g  
+str a te g y
+Sho w in docs
+B uild a maint ainable pr oject and a v oid 
+“ deep st acking” classe s.
+H o w  to a v oid dee p  st ackin g?  
+ U s e one sin g le custom clas s 
+te xt-siz e-medium te xt-color -secondar y
+te xt- w eight-light te xt-style-it alic
+M er ge combo classe s
+te xt-style-alternati v e
+U se F ins w eet E xtension to mer ge classe s.
+2 .  Cr e a te combo clas s w it h  r e q uir ed style s
+f aq_item
+te xt-color -primar y
+back gr ound-color -primar y
+te xt-style-it alic
+f aq_item is-dark
+M er ge st ack ed classe s to a combo class.
+3 .  N e st anot h er D i v  block
+te xt-color -secondar y
+max - width-lar ge
+U seful f or a v oiding st ack ed utility classe s. 
+R ecommended when st acking utility classe s of 
+di ff er ent type s, lik e typogr aph y and max - width.
+T y p o g r a ph y
+Str ategy f or pr oject typogr aph y using utility classe s Sho w in docs
+T a g s H e adin g  clas s e s
+H 1
+H 2
+H3
+H 4
+H 5
+H 6
+he ading-style-h 1
+he ading-style-h 2
+he ading-style-h 3
+he ading-style-h 4
+he ading-style-h 5
+he ading-style-h 6
+4 r em
+3 r em
+2 r em
+1 . 5 r em
+1 . 2 5 r em
+1 r em
+U se the corr ect H T ML  H e ading t ag based 
+on the H e ading’ s hier ar ch y on the page . 
+U se h e adin g -style- classe s only to 
+o v erride the def ault H e ading t ag style .
+If the         on the page should be styled 
+lik e an H 1 , don ’ t apply an y class to it.
+If the    H 1  should be styled lik e an   H3   ,   
+f or e xample , y ou can use a he ading-style 
+class.
+H 1 H3
+H 1 he ading-style-h 3
+H 1
+Alw a ys r e spect he ading hier ar ch y .
+G ood f or S E O .
+Corr ect 
+H 1
+H 2
+H3
+H 4
+H 2
+H3
+W r ong 
+H 1
+H 2
+H 4
+H 2
+H 5
+H3
+T e x t si z e
+U se te x t-si z e- classe s to change the siz e of 
+a te xt element.
+te xt-siz e-lar ge
+te xt-siz e-medium
+te xt-siz e-r egular
+te xt-siz e-small
+te xt-siz e-tin y
+1 . 5 r em
+1 . 2 5 r em
+1 r em
+0 . 85 r em
+0 . 7 5 r em
+T e x t color
+U se te x t-color - classe s to change the 
+color of a te xt element. It is encour aged to 
+add mor e utility class color s based on the 
+pr oject style s.
+te xt-color -primar y
+te xt-color -secondar y
+te xt-color -neutr al
+color :  # 000
+color :  # ff f
+color :  # 7 0 7 0 7 0
+T e x t w ei gh t
+U se te x t- w ei gh t- classe s to change the 
+w eight of a te xt element
+te xt- w eight-light
+te xt- w eight-normal
+te xt- w eight-semibold
+te xt- w eight-bold
+te xt- w eight- xbold
+w eight :  3 00
+w eight :  4 00
+w eight :  6 00
+w eight :  7 00
+w eight :  8 00
+T e x t ali g nment
+U se te x t-ali g n- classe s to align the te xt.
+te xt-align-lef t
+te xt-align-center
+te xt-align-right
+M or e te x t utility clas s e s
+M or e utility classe s to help maint ain a global 
+typogr aph y s ystem f or the pr oject.
+te xt-style- 2 line s
+te xt-style- 3 line s
+te xt-style-allcaps
+te xt-style-it alic
+te xt-style-strik ethr ough
+te xt-style-muted
+T runcate the te xt
+T runcate the te xt
+e . g. A LL  C A P S
+e . g. i t ali c
+e . g. strik e
+opacity :  0 . 7
+S t ack ty p o g r a ph y clas s e s
+Cr e ate unique , y et global combinations of 
+typogr aph y style s.
+te xt-color -blue te xt- w eight-semibold
+A v oid st acking non-typogr aph y classe s with 
+typogr aph y classe s.
+Custom ty p o g r a ph y clas s e s
+Cr e ate a custom class if the typogr aph y 
+inst ance is v er y unique , r equir e s deep 
+st acking or is better managed outside of the 
+utility s ystem.
+D eep st acking typogr aph y classe s :
+M er ge classe s to a custom class. U se 
+F ins w eet E xtension to mer ge classe s
+A v oid cr e ating too man y custom classe s f or 
+typogr aph y . H o w e v er , it is allo w ed to 
+impr o v e maint ainability of the pr oject.
+E x am p le s o f  custom clas s e s
+f ooter_cop yright-te xt
+f ooter_link
+her o_subtitle
+te am_user_de scription
+S p acin g  
+Str ategy f or consistent spacing Sho w in docs
+U tility clas s e s Sho w in docs
+T w o methods :  “ Spacing wr apper ” and “ Spacing block”
+S p acin g  W r a pp er S p acin g  B lock V alue in r em
+padding- [ dir ection ] padding- [ siz e ] spacer - [ siz e ]
+padding-top
+padding-right
+padding-bottom
+padding-lef t
+padding- v er tical
+padding-horiz ont al
+padding-tin y
+padding- xx small
+padding- x small
+padding-small
+padding-medium
+padding-lar ge
+padding- xlar ge
+padding- xxlar ge
+padding-huge
+padding- xhuge
+padding- xxhuge
+padding-custom 1
+padding- 0
+spacer -tin y
+spacer - xx small
+spacer - x small
+spacer -small
+spacer -medium
+spacer -lar ge
+spacer - xlar ge
+spacer - xxlar ge
+spacer -huge
+spacer - xhuge
+spacer - xxhuge
+spacer -custom 1
+0 . 1 2 5
+0 . 2 5
+0 . 5
+1
+2
+3
+4
+5
+6
+8
+1 2
+1 . 5
+0
+M ar gins ar e also included as spacing 
+wr apper s. M ar gins f ollo w the same 
+structur e as padding.
+mar gin- [ dir ection ] mar gin- [ siz e ]
+C ontent s ections
+padding-section- [ siz e ]
+It helps to manage top and bottom padding 
+f or sections globally thr oughout the pr oject.
+padding-section-small
+padding-section-medium
+padding-section-lar ge
+3 r em
+5 r em
+8 r em
+Custom clas s e s Sho w in docs
+Cr e ate custom class to an element when it 
+r equir e s unique spacing that is not co v er ed 
+in the utility s ystem. 
+E xample :
+f orm_input
+has unique space mar gin-bottom :  0 . 7 5 r em
+B ene f it s
+ G lobal spacing update s f or the r ecurring 
+element 
+ It can include mor e style s →  helps to 
+a v oid combo classe s and o v er st acking 
+ E as y to maint ain without a ff ecting utility 
+classe s
+spacing_cle an
+R emo v e nati v e W ebflo w component 
+spacing.
+S p acin g  str a te g y
+Spacing block s Sho w in docs W r apper s Sho w in docs G rid /  fle x Sho w in docs
+H o w  it w ork s
+A dd block betw een elements to add spacing.
+spacer - [ siz e ] A dd content inside a D i v  block with Spacing utility classe s.
+padding-bottom
+padding-medium
+padding-medium
+ A dd content inside wr apper with grid 
+or fle x style s applied. 
+te stimonials_content
+H o w  it look s
+H e adin gspacer -medium
+T his is some te xt inside of a di v  block.
+spacer -medium
+T e x t link
+padding-bottom padding-medium
+H e adin g
+T his is some te xt inside of a di v  block.
+padding-bottom padding-medium
+T e x t link
+te stimonials_content
+H e adin g
+T his is some te xt inside of a di v  block.
+T e x t link
+N a v i g a tor
+F older s
+Contr ol and or ganiz e classe s with F older s Sho w in docs
+F older s help us gr oup , se ar ch f or , and acce ss 
+elements in a pr oject.
+U nder scor e equals one custom class f older :
+f older -name _ element-name
+T he fir st w or d of the classname is the f older name .
+Cr e ate
+A dd under scor e to a class name to cr e ate a f older . 
+O ne under scor e is one f older .
+f older -name_element f older - 1 _f older - 2 _element
+R ename
+R enaming the   to    , will apply 
+a ne w name to  e v er y class inside the f older .
+her o_  te am_ f older
+Custom classe s
+f older -name _ element-name
+Custom classe s ( under scor e )  ar e or ganiz ed b y the w or d 
+bef or e the under scor e .
+E xample of a page built with
+custom classe s  and  utility classe s
+Utility classe s
+element-name
+Utility classe s ( no under scor e )  ar e automatically 
+or ganiz ed inside the Utility f older .
+M or e utility s y stems
+A dditional utility classe s included in Client- F ir st
+B uttons Sho w in docs
+button
+button is-secondar y
+button is-te xt
+P r o ti p :  A dd style fle x or grid with gap 
+to a button with label and and icon.
+button
+0 . 5 em
+button-gr oup
+Cr e ate horiz ont al space 
+betw een tw o buttons.
+I cons Sho w in docs
+Set height siz e
+icon- [ siz e ]
+icon-small
+icon-medium
+icon-lar ge
+Set height and width
+icon- 1X1 - [ siz e ]
+icon- 1 x 1 -small
+icon- 1 x 1 -medium
+icon- 1 x 1 -lar ge
+1 r em
+2 r em
+2 . 5 r em
+S et s o f  utility clas s e s Sho w in docs
+H ide element
+hide
+hide-t ablet
+hide-mobile-landscape
+hide-mobile-por tr ait
+O v er flo w
+o v er flo w -hidden
+o v er flo w -scr oll
+o v er flo w -auto
+align-center
+B ack gr ound color
+back gr ound-color -primar y
+back gr ound-color -secondar y
+back gr ound-color -dark
+# f 5 f 5 f 5
+# ff f
+# 000
+L imit width of an element
+max - width- xxlar ge
+max - width- xlar ge
+max - width-lar ge
+max - width-medium
+max - width-small
+max - width- x small
+max - width- xx small
+8 0 r em
+6 4 r em
+4 8 r em
+3 2 r em
+2 0 r em
+16 r em
+1 2 r em
+‍max - width-full
+max - width-full-t ablet
+max - width-full-mobile-landscape
+max - width-full-mobile-por tr ait
+U seful stu ff
+mar gin :  0  auto
+position :  absolute , top , right, bottom, lef t :  0
+Allo ws elements to beha v e as inline , while 
+maint aining fle x capabilitie s inside them.
+pointer -e v ents-none
+pointer -e v ents-auto
+z -inde x - 1
+z -inde x - 2
+align-center
+la y er
+displa y -inlinefle x
+T urn on mouse e v ents on the element
+T urn o ff  mouse e v ents on the element
+T urn on / o ff  mouse e v ents 
+on the element
+S u pp or tin g  content Sho w in docs
+Global S tyle s embed
+G lobal Style s embed is the embed code that come s 
+with the Client- F ir st clone able and it has nece ssar y 
+code snippets of the s ystem.
+G lobal Style s embed component must be applied to 
+e v er y page in the pr oject
+Sho w in docs
+S ale s str a te g y
+H o w y ou can le v er age Client- F ir st to win mor e 
+pr ojects and k eep y our clients happ y . W ith a gr e at 
+pr oject come s gr e at document ation.
+Client f ocus ed g oals :  
+ M ak e big change s to the W ebflo w pr oject 
+ R e ad most classe s in the pr oject and under st and 
+their purpose 
+ Scale the w ebsite based on the or ganiz ation in 
+the pr oject 
+ L e arn Client- F ir st if the y wish to do so 
+ Continue w orking with y ou e ff ecti v el 
+ M aint ain the pr oject with a di ff er ent W ebflo w 
+de v eloper
+S ale s p oint s :
+ M aintenanc 
+ Scalabilit 
+ A cce ssibilit 
+ Community r ecogniz e 
+ Inclusi v ity - a v ailable on 6  language s
+Sho w in docs
+R e s our ce s
+V H  - V ie wpor t H ight is a unit that is r elati v e to the 
+entir e scr ee n
+
+L V H ,  S V H ,  D V H  - T he L ar ge , Small, and D ynamic 
+V ie wpor ts ar e the units that r epr e sent the curr ently 
+usable space
+1 1 : 2 3
+https : / / fins w eet. com /
+1 1 : 2 3
+fins w eet. com
+1 00 S V H1 00 V H 1 00 D V H 1 00 L V H
+L e arn mor e lik e this in docs
