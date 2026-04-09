@@ -9,6 +9,7 @@ import Aether3DConfigurator from './components/Aether3DConfigurator';
 import AetherPerformance from './components/AetherPerformance';
 import AetherIphoneDrive from './components/AetherIphoneDrive';
 import AetherLoader from './components/AetherLoader';
+import AetherSmoothScroll from './components/AetherSmoothScroll';
 
 const AETHER_TAG = '%c AETHER ';
 const AETHER_STYLE = 'background: #000; color: #fff; border-radius: 2px; padding: 2px 5px; font-weight: bold;';
@@ -16,6 +17,7 @@ const AETHER_STYLE = 'background: #000; color: #fff; border-radius: 2px; padding
 function AetherApp() {
   return (
     <>
+      <AetherSmoothScroll />
       <AetherLoader />
       <AetherHeroNoShadow />
       <AetherHighlights />
